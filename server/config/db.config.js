@@ -3,11 +3,11 @@ const URI = process.env.MONGO_URI;
 
 const connectDB = async ()=>{
     try{
-        mongoose.connect(URI);
+        await mongoose.connect(URI);
         console.log("DB connected");
     }
     catch(e){
-        console.error("DB connection error:", err.message);
+        console.error("DB connection error:", e.message);
         process.exit(1);
     }
 }
