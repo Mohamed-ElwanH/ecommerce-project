@@ -11,9 +11,12 @@ const token = async (user) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  try{
   const myUser = await User.findOne({ email });
   if (!myUser || !(await myUser.isCorrectPassword(password)))
     return res.status(404).json("Invalid email or password");
   const accessToken = await token(myUser);
-  res.status(200).json({ message: "Logged in", token: accessToken });
+  res.status(200).json({ message: "Logged in", token: accessToken });}catch(e){
+    res.status(500).json({error: 'DB error'})
+  }
 };
