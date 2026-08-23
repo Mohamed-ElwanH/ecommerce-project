@@ -15,9 +15,13 @@ app.use(express.json());
 //routing
 const userRoute = require("./routes/user.route.js");
 const authRoute = require("./routes/auth.route.js");
+const productRoute = require('./routes/product.route.js')
 
 app.use("/api/user/", userRoute);
 app.use("/api/auth/", authRoute);
+app.use('/api/product/', productRoute)
+
+
 //listen
 const PORT = process.env.PORT;
 app.listen(PORT, (_) => console.log(`Server started at port: ${PORT}`));

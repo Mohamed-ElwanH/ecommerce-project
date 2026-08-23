@@ -32,3 +32,21 @@ exports.updateProduct = async (req, res)=>{
         res.status(500).json({error: e.message});
     }
 }
+exports.getAllProducts = async(req, res)=>{
+  try{
+    const allProducts = await Product.find();
+    res.status(200).json({message:'Products list:', data:allProducts});
+  }catch(e){
+    res.status(500).json({error: e.message});
+  }
+}
+exports.getProductBySlug = async (req, res)=>{
+  const slug = req.params.slug;
+  if(!slug) return res.status(400).json({error:'Product needs a slug'});
+  try{
+  const product = await Product.findOne({slug});
+  res.status(200).json({message:`Get product by slug: ${slug}`, data:product});
+  }catch(e){
+    res.status(404).json({error: e.message});
+  }
+}

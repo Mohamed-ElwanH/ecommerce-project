@@ -13,19 +13,14 @@ const productSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    stock: {
-      type: String,
-      required: true,
-      enum: ["Available", "Sold out"],
-    },
+    stock: { type: Number, required: true, min: 0 },
     images: [{ type: String, required: true }],
     category: {
       type: String,
       required: true,
       enum: ["Men", "Women"],
     },
-    subCategory: [{ sub: { type: String, required: true } }],
-
+    subCategory: [{ type: String, required: true }],
     //slug is how the id becomes the product name in the url
     slug: {
       type: String,
