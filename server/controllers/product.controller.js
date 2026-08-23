@@ -17,36 +17,41 @@ exports.createProduct = async (req, res) => {
     });
     res.status(200).json({ message: "Product created", data: newProduct });
   } catch (e) {
-    res.status(500).json({error: e.message});
+    res.status(500).json({ error: e.message });
   }
 };
-exports.updateProduct = async (req, res)=>{
-    try{
-        const {id} = req.params;
-        const updates = req.body
-        const updatedProduct = await Product.findByIdAndUpdate(id, updates, {new:true, runValidators:true});
-        if(!updatedProduct) 
-            return res.status(404).json({error:"Product not found"})
-
-    }catch(e){
-        res.status(500).json({error: e.message});
-    }
-}
-exports.getAllProducts = async(req, res)=>{
-  try{
+exports.updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+    const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
+      new: true,
+      runValidators: true,
+    });
+    if (!updatedProduct)
+      return res.status(404).json({ error: "Product not found" });
+    res.status(200).json({message:'Product updated', data:updatedProduct})
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
+exports.getAllProducts = async (req, res) => {
+  try {
     const allProducts = await Product.find();
-    res.status(200).json({message:'Products list:', data:allProducts});
-  }catch(e){
-    res.status(500).json({error: e.message});
+    res.status(200).json({ message: "Products list:", data: allProducts });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
-}
-exports.getProductBySlug = async (req, res)=>{
+};
+exports.getProductBySlug = async (req, res) => {
   const slug = req.params.slug;
-  if(!slug) return res.status(400).json({error:'Product needs a slug'});
-  try{
-  const product = await Product.findOne({slug});
-  res.status(200).json({message:`Get product by slug: ${slug}`, data:product});
-  }catch(e){
-    res.status(404).json({error: e.message});
+  if (!slug) return res.status(400).json({ error: "Product needs a slug" });
+  try {
+    const product = await Product.findOne({ slug });
+    res
+      .status(200)
+      .json({ message: `Get product by slug: ${slug}`, data: product });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
-}
+};
