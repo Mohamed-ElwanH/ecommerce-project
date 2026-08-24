@@ -43,3 +43,13 @@ exports.getSubCategoryBySlug = async (req, res)=>{
         res.status(500).json({error: e.message})
     }
 }
+exports.deleteSubCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const subCategory = await SubCategory.findByIdAndUpdate(id, { isDeleted: true }, { new: true });
+    if (!subCategory) return res.status(404).json({ error: "SubCategory not found" });
+    res.status(200).json({ message: "SubCategory deleted", data: subCategory });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};

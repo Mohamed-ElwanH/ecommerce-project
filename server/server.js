@@ -15,13 +15,15 @@ app.use(express.json());
 //routing
 const userRoute = require("./routes/user.route.js");
 const authRoute = require("./routes/auth.route.js");
-const productRoute = require('./routes/product.route.js')
+const productRoute = require("./routes/product.route.js");
+const categoryRoute = require("./routes/category.route.js");
+const subCategoryRoute = require("./routes/subCategory.route.js");
 
 app.use("/api/user/", userRoute);
 app.use("/api/auth/", authRoute);
-app.use('/api/product/', productRoute)
-
-
+app.use("/api/product/", productRoute);
+app.use("/api/category", categoryRoute);
+app.use("/api/subCategory", subCategoryRoute);
 //listen
 const PORT = process.env.PORT;
 app.listen(PORT, (_) => console.log(`Server started at port: ${PORT}`));
