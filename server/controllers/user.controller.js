@@ -5,7 +5,7 @@ exports.getAllUsers =  async (req, res) => {
   const myUsers = await User.find();
   res.status(200).json({message:'users list',data:myUsers});}
   catch(e){
-    res.status(500).json({error: 'DB error'})
+    res.status(500).json({error: e.message})
   }
 }
 exports.createUser = (role)=>{return async (req, res) => {
