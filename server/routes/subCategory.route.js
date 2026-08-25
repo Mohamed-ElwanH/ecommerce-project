@@ -4,6 +4,7 @@ const {
   getSubCategoryBySlug,
   createSubCategory,
   updateSubCategory,
+  deleteSubCategory
 } = require("../controllers/subCategory.controller");
 const { authenticate } = require("../middlewares/auth.middlewares");
 const { authorize } = require("../middlewares/role.middlewares");

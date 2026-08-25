@@ -90,7 +90,7 @@ desktop.ini
 # ==============================
 coverage/
 .nyc_output/
-
+requests.http
 # ==============================
 # Package manager files
 # ==============================
