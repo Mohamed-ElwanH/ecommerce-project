@@ -4,7 +4,8 @@ exports.createProduct = async (req, res) => {
     const { name, desc, price, stock, category, subCategory, slug } = req.body;
     // if (!req.files || req.files.length === 0)
     //   return res.status(400).json({ error: "At least one image required" });
-    const images = req.files.map((f) => f.filename);
+    
+    const images = req.files && req.files.length ? req.files.map((f) => f.filename) : ["placeholder.jpg"];
     const newProduct = await Product.create({
       name,
       desc,

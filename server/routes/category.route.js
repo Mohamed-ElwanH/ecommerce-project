@@ -4,7 +4,7 @@ const {
   getCategoryBySlug,
   createCategory,
   updateCategory,
-  deleteCategory
+  deleteCategory,
 } = require("../controllers/category.controller");
 const { authenticate } = require("../middlewares/auth.middlewares");
 const { authorize } = require("../middlewares/role.middlewares");
