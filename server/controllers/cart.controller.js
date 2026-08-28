@@ -13,7 +13,10 @@ exports.getCart = async (req, res) => {
   try {
     const userId = req.user._id;
     const cart = await Cart.findOne({ user: userId }).populate("items.product");
-    if (!cart) return res.status(200).json({message:'Cart is empty', data:{items:[]}});
+    if (!cart)
+      return res
+        .status(200)
+        .json({ message: "Cart is empty", data: { items: [] } });
     res.status(200).json({ message: "Cart", data: cart });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -70,10 +73,26 @@ exports.removeItemFromCart = async (req, res) => {
   }
 };
 
-// exports.updateCart = async(req, res)=>{
-//   try{
-//     const userId = req.user._id;
-//     const updates = req.body;
-//     const cart = await Cart.findByIdAndUpdate(userId, i)
-//   }
-// }
+exports.confirmPriceChange = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const productId  = req.params.id;
+
+    const cart = await Cart.findOne({ user: userId });
+    if (!cart) return res.status(404).json({ error: "Cart not found" });
+
+    const product = await Product.findById(productId);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+
+    const item = cart.items.find((i) => i.product.toString() === productId);
+    if (!item) return res.status(404).json({ error: "Item not found in cart" });
+
+    item.price = product.price;
+    item.isPriceChanged = false;
+
+    await cart.save();
+    res.status(200).json({ message: "New price confirmed", data: cart });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
