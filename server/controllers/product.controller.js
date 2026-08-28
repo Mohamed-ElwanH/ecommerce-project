@@ -1,4 +1,5 @@
 const Product = require("../models/product.model");
+const Cart = require("../models/cart.model");
 exports.createProduct = async (req, res) => {
   try {
     const { name, desc, price, stock, category, subCategory, slug } = req.body;
@@ -25,12 +26,25 @@ exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
+    const old = await Product.findById(id)
+    if(!old)  return res.status(404).json({error: 'Product not found'})
+
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
       new: true,
       runValidators: true,
     });
     if (!updatedProduct)
       return res.status(404).json({ error: "Product not found" });
+    
+    if(updates.price !== old.price)
+    {
+      await Cart.updateMany(
+        {"items.product":id},
+        {$set: {"items.$[elem].isPriceChanged":true}},
+        {arrayFilters: [{"elem.product":id}]}
+      )
+    }
+
     res.status(200).json({message:'Product updated', data:updatedProduct})
   } catch (e) {
     res.status(500).json({ error: e.message });

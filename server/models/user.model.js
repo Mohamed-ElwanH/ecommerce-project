@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
         floor: { type: String },
         apartment: { type: String },
         notes: { type: String }, // optional instructions
+        isDefault:{type:Boolean}
       },
     ],
     isBlocked: {
