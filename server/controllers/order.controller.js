@@ -71,9 +71,9 @@ exports.cancelOrder = async (req, res) => {
     if (!order) return res.status(404).json({ error: "Order not found" });
     if (order.status === "pending" || order.status === "in progress") {
       if (userId === order.user.toString()) {
-        order.status = "canceled by user";
+        order.status = "cancelled by user";
         await order.save();
-        res.status(200).json({ message: "Order canceled", data: order });
+        res.status(200).json({ message: "Order cancelled", data: order });
       } else
         res.status(403).json({ error: "Not authorized to cancel this order" });
     } else res.status(409).json({ error: "Cannot cancel order once shipped" });
