@@ -20,7 +20,7 @@ const categoryRoute = require("./routes/category.route.js");
 const subCategoryRoute = require("./routes/subCategory.route.js");
 const cartRoute = require("./routes/cart.route.js");
 const orderRoute = require('./routes/order.route.js');
-
+const testimonialRoute = require('./routes/order.route.js')
 
 app.use("/api/user/", userRoute);
 app.use("/api/auth/", authRoute);
@@ -29,6 +29,7 @@ app.use("/api/category", categoryRoute);
 app.use("/api/subCategory", subCategoryRoute);
 app.use("/api/cart", cartRoute);
 app.use('api/order', orderRoute);
+app.use('api/testimonial', testimonialRoute);
 
 //listen
 const PORT = process.env.PORT;
