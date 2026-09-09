@@ -19,9 +19,9 @@ const productRoute = require("./routes/product.route.js");
 const categoryRoute = require("./routes/category.route.js");
 const subCategoryRoute = require("./routes/subCategory.route.js");
 const cartRoute = require("./routes/cart.route.js");
-const orderRoute = require('./routes/order.route.js');
-const testimonialRoute = require('./routes/order.route.js')
-const reportsRoute = require('./routes/reports.route.js')
+const orderRoute = require("./routes/order.route.js");
+const testimonialRoute = require("./routes/testimonial.route.js");
+const reportsRoute = require("./routes/reports.route.js");
 
 app.use("/api/user/", userRoute);
 app.use("/api/auth/", authRoute);
@@ -29,9 +29,9 @@ app.use("/api/product/", productRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/subCategory", subCategoryRoute);
 app.use("/api/cart", cartRoute);
-app.use('api/order', orderRoute);
-app.use('api/testimonial', testimonialRoute);
-app.use('api/reports', reportsRoute);
+app.use("/api/order", orderRoute);
+app.use("/api/testimonial", testimonialRoute);
+app.use("/api/reports", reportsRoute);
 //listen
 const PORT = process.env.PORT;
 app.listen(PORT, (_) => console.log(`Server started at port: ${PORT}`));
