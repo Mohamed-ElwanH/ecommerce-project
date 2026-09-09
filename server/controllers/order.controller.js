@@ -12,7 +12,6 @@ exports.createOrder = async (req, res) => {
       .session(session);
 
     const orderProducts = [];
-    const { address } = req.body;
 
     let totalPrice = 0;
     if (!cart || cart.items.length === 0) {
@@ -20,6 +19,14 @@ exports.createOrder = async (req, res) => {
       session.endSession();
       return res.status(400).json({ message: "Cart is empty" });
     }
+    const { addressId } = req.body;
+    const saved = req.user.addresses.id(addressId);
+    if (!saved) {
+      await session.abortTransaction();
+      return res.status(400).json({ error: "Invalid addressId" });
+    }
+    const address = saved.toObject();
+    delete address._id;
     for (let item of cart.items) {
       if (!item.product || item.product.isDeleted || !item.product.isActive) {
         throw new Error(
