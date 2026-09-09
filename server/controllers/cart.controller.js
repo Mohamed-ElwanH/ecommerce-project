@@ -1,6 +1,5 @@
 const Cart = require("../models/cart.model");
 const Product = require("../models/product.model");
-exports.createCart = async (req, res) => {
   exports.getCart = async (req, res) => {
     try {
       const userId = req.user._id;
@@ -112,4 +111,3 @@ exports.createCart = async (req, res) => {
     await cart.save();
     res.status(200).json({ message: "Cart merged", data: cart });
   };
-};
