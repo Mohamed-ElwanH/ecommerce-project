@@ -13,6 +13,7 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
     const myUser = await User.findOne({ email }).select('+password');
+    if (myUser.isBlocked) return res.status(403).json({ error: 'Account is blocked' });
     if (!myUser || !(await myUser.isCorrectPassword(password)))
       return res.status(404).json("Invalid email or password");
     const accessToken = await token(myUser);

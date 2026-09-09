@@ -5,8 +5,11 @@ exports.createProduct = async (req, res) => {
     const { name, desc, price, stock, category, subCategory, slug } = req.body;
     // if (!req.files || req.files.length === 0)
     //   return res.status(400).json({ error: "At least one image required" });
-    
-    const images = req.files && req.files.length ? req.files.map((f) => f.filename) : ["placeholder.jpg"];
+
+    const images =
+      req.files && req.files.length
+        ? req.files.map((f) => f.filename)
+        : ["placeholder.jpg"];
     const newProduct = await Product.create({
       name,
       desc,
@@ -26,8 +29,8 @@ exports.updateProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-    const old = await Product.findById(id)
-    if(!old)  return res.status(404).json({error: 'Product not found'})
+    const old = await Product.findById(id);
+    if (!old) return res.status(404).json({ error: "Product not found" });
 
     const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
       new: true,
@@ -35,17 +38,21 @@ exports.updateProduct = async (req, res) => {
     });
     if (!updatedProduct)
       return res.status(404).json({ error: "Product not found" });
-    
-    if(updates.price !== old.price)
-    {
+
+    const newPrice = Number(updates.price);
+    if (
+      updates.price !== undefined &&
+      !Number.isNaN(newPrice) &&
+      newPrice !== old.price
+    ) {
       await Cart.updateMany(
-        {"items.product":id},
-        {$set: {"items.$[elem].isPriceChanged":true}},
-        {arrayFilters: [{"elem.product":id}]}
-      )
+        { "items.product": id },
+        { $set: { "items.$[elem].isPriceChanged": true } },
+        { arrayFilters: [{ "elem.product": id }] },
+      );
     }
 
-    res.status(200).json({message:'Product updated', data:updatedProduct})
+    res.status(200).json({ message: "Product updated", data: updatedProduct });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -70,13 +77,20 @@ exports.getProductBySlug = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
-exports.deleteProduct = async(req, res)=>{
-  const {id} = req.params;
-  try{
-    const product = await Product.findByIdAndDelete(id);
-    if(!product) return res.status(404).json({error:"Product not found"})
-    res.status(200).json({message:'Product deleted', data: product});
-  }catch(e){
-    res.status(500).json({error: e.message})
+exports.deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const product = await Product.findByIdAndUpdate(
+      id,
+      { isDeleted: true, isActive: false },
+      { new: true },
+    );
+    if (!product) return res.status(404).json({ error: "Product not found" });
+    await Cart.updateMany({}, { $pull: { items: { product: id } } });
+    res.status(200).json({ message: "Product deleted", data: product });
+    if (!product) return res.status(404).json({ error: "Product not found" });
+    res.status(200).json({ message: "Product deleted", data: product });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
-}
+};

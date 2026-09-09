@@ -21,6 +21,11 @@ exports.createOrder = async (req, res) => {
       return res.status(400).json({ message: "Cart is empty" });
     }
     for (let item of cart.items) {
+      if (!item.product || item.product.isDeleted || !item.product.isActive) {
+        throw new Error(
+          "Cart contains an unavailable product: " + item.product?._id,
+        );
+      }
       const productId = item.product._id;
       const quantity = item.quantity;
       const priceAtOrderTime = item.product.price;
@@ -107,7 +112,10 @@ exports.getAllOrdersHistory = async (req, res) => {
 exports.getUserOrdersHistory = async (req, res) => {
   try {
     const userId = req.user._id;
-    const orders = await Order.find({ user: userId }).populate("user", "-password");
+    const orders = await Order.find({ user: userId }).populate(
+      "user",
+      "-password",
+    );
     res.status(200).json({ message: "All user orders", data: orders });
   } catch (e) {
     res.status(500).json({ error: e.message });
