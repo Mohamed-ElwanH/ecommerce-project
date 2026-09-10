@@ -1,18 +1,15 @@
 <nav>
-  <a routerLink="/dashboard/home" routerLinkActive="active">{{ 'dash.home' | translate }}</a>
-  <a routerLink="/dashboard/users-list" routerLinkActive="active">{{ 'dash.users' | translate }}</a>
-  <a routerLink="/dashboard/products" routerLinkActive="active">{{ 'dash.products' | translate }}</a>
-  <a routerLink="/dashboard/categories" routerLinkActive="active">{{ 'dash.categories' | translate }}</a>
-  <a routerLink="/dashboard/subcategories" routerLinkActive="active">{{ 'dash.subcategories' | translate }}</a>
-  <a routerLink="/dashboard/orders" routerLinkActive="active">{{ 'dash.orders' | translate }}</a>
-  <a routerLink="/dashboard/testimonials" routerLinkActive="active">{{ 'dash.testimonials' | translate }}</a>
-  <a routerLink="/dashboard/sales-report" routerLinkActive="active">{{ 'dash.salesReport' | translate }}</a>
+  <a routerLink="/dashboard/home" routerLinkActive="active">Home</a>
+  <a routerLink="/dashboard/users-list" routerLinkActive="active">Users</a>
+  <a routerLink="/dashboard/products" routerLinkActive="active">Products</a>
+  <a routerLink="/dashboard/categories" routerLinkActive="active">Categories</a>
+  <a routerLink="/dashboard/subcategories" routerLinkActive="active">Subcategories</a>
+  <a routerLink="/dashboard/orders" routerLinkActive="active">Orders</a>
+  <a routerLink="/dashboard/testimonials" routerLinkActive="active">Testimonials</a>
+  <a routerLink="/dashboard/sales-report" routerLinkActive="active">Sales report</a>
 
   <span class="spacer"></span>
 
-  <a routerLink="/home">{{ 'nav.store' | translate }}</a>
-  <button type="button" class="btn btn-sm" (click)="logout()">{{ 'nav.logout' | translate }}</button>
-  <button type="button" class="btn btn-sm btn-lang" (click)="translation.toggle()">
-    {{ translation.lang() === 'en' ? 'عربي' : 'English' }}
-  </button>
+  <a routerLink="/home">View store</a>
+  <button type="button" class="btn btn-sm" (click)="logout()">Logout</button>
 </nav>

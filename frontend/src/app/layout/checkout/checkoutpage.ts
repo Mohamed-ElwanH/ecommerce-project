@@ -7,11 +7,10 @@ import { UserService } from '../../core/services/user-service';
 import { OrderService } from '../../core/services/order-service';
 import { IAddress } from '../../core/models/address.model';
 import { ICart, ICartItem } from '../../core/models/cart.model';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule, TranslatePipe],
+  imports: [RouterLink, DecimalPipe, FormsModule],
   selector: 'app-checkoutpage',
   styleUrl: './checkoutpage.css',
   templateUrl: './checkoutpage.html',

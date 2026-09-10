@@ -1,4 +1,4 @@
-<h1>{{ 'categories.title' | translate }}</h1>
+<h1>Categories</h1>
 
 @if (errorMessage) {
   <p class="alert alert-danger">{{ errorMessage }}</p>
@@ -20,11 +20,11 @@
           [routerLink]="['/products-list']"
           [queryParams]="{ category: category._id }"
           class="btn btn-primary"
-          >{{ 'categories.browse' | translate }}</a
+          >Browse products</a
         >
       </div>
     </div>
   } @empty {
-    <p>{{ 'categories.none' | translate }}</p>
+    <p>No categories yet.</p>
   }
 </div>

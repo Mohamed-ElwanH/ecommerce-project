@@ -1,4 +1,4 @@
-<h1>{{ 'checkout.title' | translate }}</h1>
+<h1>Checkout</h1>
 
 @if (errorMessage) {
   <p class="alert alert-danger">{{ errorMessage }}</p>
@@ -6,11 +6,11 @@
 
 @if (!addresses.length) {
   <p class="alert alert-warning">
-    {{ 'checkout.noAddresses' | translate }}
-    <a routerLink="/account">{{ 'nav.account' | translate }}</a>
+    You have no saved addresses yet - add one in your account first.
+    <a routerLink="/account">My account</a>
   </p>
 } @else {
-  <h3>{{ 'checkout.address' | translate }}</h3>
+  <h3>Delivery address</h3>
   <div class="addresses">
     @for (address of addresses; track address) {
       <label class="address-option">
@@ -24,7 +24,7 @@
           <strong>{{ address.title }}</strong> - {{ address.street }},
           {{ address.city }} @if (address.area) {, {{ address.area }} }
           @if (address.isDefault) {
-            <span class="badge">{{ 'checkout.default' | translate }}</span>
+            <span class="badge">default</span>
           }
         </span>
       </label>
@@ -34,20 +34,20 @@
 
 @if (unconfirmedItems.length) {
   <p class="alert alert-warning">
-    {{ unconfirmedItems.length }} {{ 'checkout.unconfirmed' | translate }}
-    <a routerLink="/cart">{{ 'nav.cart' | translate }}</a>.
+    {{ unconfirmedItems.length }} item(s) had a price change and are not included until you confirm the new price in the
+    <a routerLink="/cart">Cart</a>.
   </p>
 }
 
 @if (confirmedItems.length) {
-  <h3>{{ 'checkout.summary' | translate }}</h3>
+  <h3>Order summary</h3>
   <table>
     <thead>
       <tr>
-        <th>{{ 'cart.product' | translate }}</th>
-        <th>{{ 'cart.price' | translate }}</th>
-        <th>{{ 'cart.quantity' | translate }}</th>
-        <th>{{ 'cart.subtotal' | translate }}</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
       </tr>
     </thead>
     <tbody>
@@ -61,12 +61,12 @@
       }
     </tbody>
   </table>
-  <h3>{{ 'checkout.total' | translate }}: {{ total() | number: '1.2-2' }} EGP</h3>
+  <h3>Total: {{ total() | number: '1.2-2' }} EGP</h3>
   <button class="btn btn-primary" (click)="placeOrder()" [disabled]="placing || !addresses.length">
-    {{ placing ? ('checkout.placing' | translate) : ('checkout.place' | translate) }}
+    {{ placing ? 'Placing order...' : 'Place order' }}
   </button>
 } @else if (cart?.items?.length) {
-  <p>{{ 'checkout.nothingReady' | translate }} <a routerLink="/cart">{{ 'nav.cart' | translate }}</a>.</p>
+  <p>Nothing ready for checkout - see the <a routerLink="/cart">Cart</a>.</p>
 } @else {
-  <p>{{ 'checkout.empty' | translate }}</p>
+  <p>Your cart is empty - browse products</p>
 }

@@ -7,7 +7,7 @@ exports.getSalesReport = async (req, res) => {
 
     const matchStage = {
       status: {
-        $nin: ["cancelled by user", "cancelled by admin", "rejected", "refunded"],
+        $nin: ["canceled by user", "canceled by admin", "rejected", "refunded"],
       },
     };
     if (startDate || endDate) {

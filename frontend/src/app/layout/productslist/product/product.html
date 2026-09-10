@@ -3,15 +3,15 @@
     <img [src]="firstImage(myProduct)" [alt]="myProduct.name" />
     <div class="card-body">
       <h5 class="card-title">{{ myProduct.name }}</h5>
-      <p class="card-text">{{ 'product.price' | translate }}: {{ myProduct.price | number: '1.2-2' }} EGP</p>
+      <p class="card-text">Price: {{ myProduct.price | number: '1.2-2' }} EGP</p>
       @if (myProduct.stock === 0) {
-        <p class="card-text"><span class="badge">{{ 'product.outOfStock' | translate }}</span></p>
+        <p class="card-text"><span class="badge">Out of stock</span></p>
       } @else if (myProduct.stock <= 3) {
         <p class="card-text">
-          <span class="badge">{{ 'product.onlyLeftBefore' | translate }} {{ myProduct.stock }} {{ 'product.onlyLeftAfter' | translate }}</span>
+          <span class="badge">Only {{ myProduct.stock }} left</span>
         </p>
       }
-      <a [routerLink]="['/products-list', myProduct.slug]" class="btn btn-primary">{{ 'product.details' | translate }}</a>
+      <a [routerLink]="['/products-list', myProduct.slug]" class="btn btn-primary">More details</a>
     </div>
   </div>
 }

@@ -4,11 +4,10 @@ import { CategoryService } from '../../core/services/category-service';
 import { SubCategoryService } from '../../core/services/subCategory-service';
 import { ICategory } from '../../core/models/category.model';
 import { ISubCategory } from '../../core/models/subCategory.model';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, TranslatePipe],
+  imports: [RouterLink],
   selector: 'app-categorylist',
   styleUrl: './categorylist.css',
   templateUrl: './categorylist.html',

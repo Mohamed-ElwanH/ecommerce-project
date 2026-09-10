@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../core/services/user-service';
 import { IAddress } from '../../core/models/address.model';
 import { getApiError } from '../../core/utils/get-api-error';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [RouterLink, FormsModule, TranslatePipe],
+  imports: [RouterLink, FormsModule],
   selector: 'app-account',
   styleUrl: './account.css',
   templateUrl: './account.html',

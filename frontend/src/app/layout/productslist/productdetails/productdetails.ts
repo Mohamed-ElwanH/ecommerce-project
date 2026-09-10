@@ -8,11 +8,10 @@ import { environment } from '../../../../enviroments/env';
 import { CartService } from '../../../core/services/cart-service';
 import { DecimalPipe } from '@angular/common';
 import { Product } from '../product/product';
-import { TranslatePipe } from '../../../core/pipes/translate.pipe';
 import { getApiError } from '../../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule, Product, TranslatePipe],
+  imports: [RouterLink, DecimalPipe, FormsModule, Product],
   selector: 'app-productdetails',
   styleUrl: './productdetails.css',
   templateUrl: './productdetails.html',

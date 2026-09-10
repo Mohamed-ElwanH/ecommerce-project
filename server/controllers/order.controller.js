@@ -89,8 +89,8 @@ exports.cancelOrder = async (req, res) => {
     const order = await Order.findById(orderId);
     if (!order) return res.status(404).json({ error: "Order not found" });
     if (order.status === "pending" || order.status === "in progress") {
-      if (userId === order.user.toString()) {
-        order.status = "cancelled by user";
+          if (userId.toString() === order.user.toString()) {
+            order.status = "canceled by user";
         await order.save();
         res.status(200).json({ message: "Order cancelled", data: order });
       } else

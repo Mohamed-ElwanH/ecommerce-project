@@ -20,10 +20,11 @@ const Product = require("../models/product.model");
       const userId = req.user._id;
       const { productId, quantity } = req.body;
       const product = await Product.findById(productId);
+      if (!product || product.isDeleted || !product.isActive) return res.status(404).json({ error: "Product not found" });
+      if (quantity < 1) return res.status(400).json({ error: "Quantity must be at least 1" });
       let cart = await Cart.findOne({ user: userId });
       if (!cart) cart = new Cart({ user: userId, items: [] });
 
-      if (!product) return res.status(404).json({ error: "Product not found" });
       const existingProduct = cart.items.find(
         (i) => i.product.toString() === productId,
       );

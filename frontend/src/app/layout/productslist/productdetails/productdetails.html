@@ -4,19 +4,19 @@
     <div class="info">
       <h1>{{ myProduct.name }}</h1>
       <p>{{ myProduct.desc }}</p>
-      <p><strong>{{ 'product.price' | translate }}:</strong> {{ myProduct.price | number: '1.2-2' }} EGP</p>
+      <p><strong>Price:</strong> {{ myProduct.price | number: '1.2-2' }} EGP</p>
       @if (myProduct.stock === 0) {
-        <p class="alert alert-warning">{{ 'product.outOfStock' | translate }}</p>
+        <p class="alert alert-warning">Out of stock</p>
       } @else if (myProduct.stock <= 3) {
         <p class="alert alert-warning">
-          {{ 'product.hurryBefore' | translate }} {{ myProduct.stock }} {{ 'product.hurryAfter' | translate }}
+          Hurry - only {{ myProduct.stock }} left in stock!
         </p>
       } @else {
-        <p><strong>{{ 'product.stock' | translate }}:</strong> {{ myProduct.stock }}</p>
+        <p><strong>Stock:</strong> {{ myProduct.stock }}</p>
       }
       @if (myProduct.stock > 0) {
         <div class="toolbar">
-          <label for="qty" style="margin: 0">{{ 'cart.quantity' | translate }}</label>
+          <label for="qty" style="margin: 0">Quantity</label>
           <input
             id="qty"
             type="number"
@@ -25,16 +25,16 @@
             [(ngModel)]="quantity"
             style="width: 90px"
           />
-          <button class="btn btn-primary" (click)="addToCart()">{{ 'product.addToCart' | translate }}</button>
+          <button class="btn btn-primary" (click)="addToCart()">Add to cart</button>
           @if (added) {
-            <span class="alert alert-success" style="margin: 0">{{ 'product.added' | translate }}</span>
+            <span class="alert alert-success" style="margin: 0">Added to cart</span>
           }
           @if (cartMessage) {
             <span class="alert alert-danger" style="margin: 0">{{ cartMessage }}</span>
           }
         </div>
       }
-      <a routerLink="/cart" class="btn">{{ 'product.goToCart' | translate }}</a>
+      <a routerLink="/cart" class="btn">Go to cart</a>
     </div>
   </div>
 } @else {
@@ -43,7 +43,7 @@
 
 @if (relatedProducts.length) {
   <div class="related">
-    <h2>{{ 'product.related' | translate }}</h2>
+    <h2>Related products</h2>
     <div class="grid">
       @for (product of relatedProducts; track product) {
         <app-product [myProduct]="product"></app-product>

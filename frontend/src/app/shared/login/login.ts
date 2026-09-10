@@ -5,10 +5,9 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ILoginData } from '../../core/models/auth.model';
 import { CartService } from '../../core/services/cart-service';
 import { getApiError } from '../../core/utils/get-api-error';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',

@@ -3,11 +3,10 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TestimonialService } from '../../core/services/testimonial-service';
 import { ITestimonial } from '../../core/models/testimonial.model';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [DatePipe, FormsModule, TranslatePipe],
+  imports: [DatePipe, FormsModule],
   selector: 'app-testimoniallist',
   styleUrl: './testimoniallist.css',
   templateUrl: './testimoniallist.html',

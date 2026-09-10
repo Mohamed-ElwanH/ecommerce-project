@@ -5,10 +5,9 @@ import { UserService } from '../../core/services/user-service';
 import { ICreateUserData } from '../../core/models/user.model';
 import { Router } from '@angular/router';
 import { getApiError } from '../../core/utils/get-api-error';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [ReactiveFormsModule, TranslatePipe],
+  imports: [ReactiveFormsModule],
   selector: 'app-signup',
   styleUrl: './signup.css',
   templateUrl: './signup.html',

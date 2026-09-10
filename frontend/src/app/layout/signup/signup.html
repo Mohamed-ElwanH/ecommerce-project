@@ -1,29 +1,29 @@
-<h1>{{ 'auth.signupTitle' | translate }}</h1>
+<h1>Sign up</h1>
 
 <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
   <div class="form-field">
-    <label for="name">{{ 'auth.username' | translate }}</label>
+    <label for="name">Username</label>
     <input id="name" type="text" formControlName="name" />
   </div>
   <div class="form-field">
-    <label for="password">{{ 'auth.password' | translate }}</label>
+    <label for="password">Password</label>
     <input id="password" type="password" formControlName="password" />
   </div>
   <div class="form-field">
-    <label for="gender">{{ 'auth.gender' | translate }}</label>
+    <label for="gender">Gender</label>
     <select id="gender" formControlName="gender">
-      <option value="male">{{ 'auth.male' | translate }}</option>
-      <option value="female">{{ 'auth.female' | translate }}</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
     </select>
   </div>
   @if (successMessage) {
     <p class="alert alert-success">
       {{ successMessage }} -
-      <a (click)="goToLogin()" style="cursor: pointer">{{ 'nav.login' | translate }}</a>
+      <a (click)="goToLogin()" style="cursor: pointer">Login</a>
     </p>
   }
   @if (errorMessage) {
     <p class="alert alert-danger">{{ errorMessage }}</p>
   }
-  <button type="submit" class="btn btn-primary">{{ 'auth.create' | translate }}</button>
+  <button type="submit" class="btn btn-primary">Signup</button>
 </form>

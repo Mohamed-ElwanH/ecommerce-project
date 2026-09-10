@@ -4,10 +4,9 @@ import { RouterLink } from '@angular/router';
 import { OrderService } from '../../core/services/order-service';
 import { IOrder, orderProductName } from '../../core/models/order.model';
 import { getApiError } from '../../core/utils/get-api-error';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [DatePipe, DecimalPipe, RouterLink, TranslatePipe],
+  imports: [DatePipe, DecimalPipe, RouterLink],
   selector: 'app-ordershistory',
   styleUrl: './ordershistory.css',
   templateUrl: './ordershistory.html',

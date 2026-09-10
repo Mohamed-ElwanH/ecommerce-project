@@ -72,7 +72,8 @@ exports.getProductById = async (req, res, next) => {
   if (!mongoose.Types.ObjectId.isValid(id)) return next();
   try {
     const product = await Product.findById(id);
-    if (!product) return res.status(404).json({ error: "Product not found" });
+    if (!product || product.isDeleted || !product.isActive)
+      return res.status(404).json({ error: "Product not found" });
     res.status(200).json({ message: "Get product by id", data: product });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -83,6 +84,8 @@ exports.getProductBySlug = async (req, res) => {
   if (!slug) return res.status(400).json({ error: "Product needs a slug" });
   try {
     const product = await Product.findOne({ slug });
+    if (!product || product.isDeleted || !product.isActive)
+      return res.status(404).json({ error: "Product not found" });
     res
       .status(200)
       .json({ message: `Get product by slug: ${slug}`, data: product });
@@ -100,8 +103,6 @@ exports.deleteProduct = async (req, res) => {
     );
     if (!product) return res.status(404).json({ error: "Product not found" });
     await Cart.updateMany({}, { $pull: { items: { product: id } } });
-    res.status(200).json({ message: "Product deleted", data: product });
-    if (!product) return res.status(404).json({ error: "Product not found" });
     res.status(200).json({ message: "Product deleted", data: product });
   } catch (e) {
     res.status(500).json({ error: e.message });

@@ -6,11 +6,10 @@ import { CartService } from '../../core/services/cart-service';
 import { AuthService } from '../../core/services/auth-service';
 import { ICartItem, IGuestCartItem } from '../../core/models/cart.model';
 import { environment } from '../../../enviroments/env';
-import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule, TranslatePipe],
+  imports: [RouterLink, DecimalPipe, FormsModule],
   selector: 'app-cartpage',
   styleUrl: './cartpage.css',
   templateUrl: './cartpage.html',

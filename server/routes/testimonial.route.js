@@ -16,7 +16,7 @@ router.post("/", createTist);
 router.get("/", getApprovedTist);
 router.get("/all-testimonial", authenticate, authorize("admin"), getAllTist);
 router.put(
-  "/approve-testimoinal/:id",
+  "/approve-testimonial/:id",
   authenticate,
   authorize("admin"),
   approveTist,

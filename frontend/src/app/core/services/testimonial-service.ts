@@ -30,7 +30,7 @@ export class TestimonialService {
   }
   approveTestimonial(id: string) {
     return this._http.put<ITestimonialResponse>(
-      this.apiURL + `/approve-testimoinal/${id}`,
+      this.apiURL + `/approve-testimonial/${id}`,
       {},
     );
   }
