@@ -27,6 +27,10 @@ export class Allorders implements OnInit {
 
   ngOnInit(): void {
     this.filterCtrl.valueChanges.subscribe((v) => (this.statusFilter = v || ''));
+    this.load();
+  }
+
+  load() {
     this._orderService.getAllOrdersHistory().subscribe({
       next: (res) => (this.orders = res.data),
       error: (err) => (this.errorMessage = getApiError(err)),
@@ -50,7 +54,7 @@ export class Allorders implements OnInit {
       },
       error: (err) => {
         this.errorMessage = getApiError(err);
-        this.ngOnInit(); //restore the real status
+        this.load(); //restore the real status
       },
     });
   }

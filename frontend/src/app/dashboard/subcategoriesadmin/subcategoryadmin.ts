@@ -55,13 +55,13 @@ export class Subcategoryadmin implements OnInit {
     const v: any = this.form.value;
     if (this.editingId) {
       this._subCategoryService.updateSubCategory(this.editingId, v).subscribe({
-          next: (res) => {
-            this.successMessage = res.message;
-            this.cancelEdit();
-            this.load();
-          },
-          error: (err) => (this.errorMessage = getApiError(err)),
-        });
+        next: (res) => {
+          this.successMessage = res.message;
+          this.cancelEdit();
+          this.load();
+        },
+        error: (err) => (this.errorMessage = getApiError(err)),
+      });
     } else {
       this._subCategoryService.createSubCategory(v).subscribe({
         next: (res) => {

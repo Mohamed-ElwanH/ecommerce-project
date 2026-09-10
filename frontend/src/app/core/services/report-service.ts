@@ -14,7 +14,8 @@ export class ReportService {
   getSalesReport(startDate?: string, endDate?: string) {
     let url = this.apiURL + '/sales';
     if (startDate) url += '?startDate=' + encodeURIComponent(startDate);
-    if (endDate) url += '&endDate=' + encodeURIComponent(endDate);
+    if (endDate)
+      url += (url.includes('?') ? '&' : '?') + 'endDate=' + encodeURIComponent(endDate);
     return this._http.get<ISalesReportResponse>(url);
   }
 }
