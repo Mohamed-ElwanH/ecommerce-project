@@ -7,18 +7,18 @@
   <p class="alert alert-danger">{{ errorMessage }}</p>
 }
 
-<form (ngSubmit)="submit()">
+<form [formGroup]="adminForm" (ngSubmit)="submit()">
   <div class="form-field">
     <label>Username</label>
-    <input type="text" [(ngModel)]="form.name" name="name" required />
+    <input type="text" formControlName="name" required />
   </div>
   <div class="form-field">
     <label>Password</label>
-    <input type="password" [(ngModel)]="form.password" name="password" required />
+    <input type="password" formControlName="password" required />
   </div>
   <div class="form-field">
     <label>Gender</label>
-    <select [(ngModel)]="form.gender" name="gender">
+    <select formControlName="gender">
       <option value="male">Male</option>
       <option value="female">Female</option>
     </select>

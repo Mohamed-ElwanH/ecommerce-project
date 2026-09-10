@@ -9,7 +9,7 @@
 
 <div class="toolbar">
   <label for="statusFilter" style="margin: 0">Filter by status</label>
-  <select id="statusFilter" [(ngModel)]="statusFilter" style="width: auto">
+  <select id="statusFilter" [formControl]="filterCtrl" style="width: auto">
     <option value="">All</option>
     @for (status of statuses; track status) {
       <option [value]="status">{{ status }}</option>
@@ -25,7 +25,7 @@
         <span>{{ order.user?.name }} ({{ order.user?.email }})</span>
         <span>{{ order.createdAt | date: 'medium' }}</span>
         <strong>{{ order.totalPrice | number: '1.2-2' }} EGP</strong>
-        <select [(ngModel)]="order.status" (change)="onStatusChange(order)">
+        <select [value]="order.status" (change)="onStatusChange(order, $event)">
           @for (status of statuses; track status) {
             <option [value]="status">{{ status }}</option>
           }

@@ -14,7 +14,7 @@ export const testProviders = [provideRouter([]), provideHttpClient()];
 //Minimal ActivatedRoute stub for components that inject it directly
 export const activatedRouteStub: Partial<ActivatedRoute> = {
   snapshot: {
-    data: {},
+    data: { myProductResponse: { data: null } },
     params: {},
     queryParams: {},
   } as any,

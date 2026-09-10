@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../core/services/user-service';
 import { IAddress } from '../../core/models/address.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, ReactiveFormsModule],
   selector: 'app-account',
   styleUrl: './account.css',
   templateUrl: './account.html',
@@ -20,19 +20,29 @@ export class Account implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  addForm = {
-    title: '',
-    street: '',
-    city: '',
-    area: '',
-    building: '',
-    floor: '',
-    apartment: '',
-    notes: '',
-    isDefault: false,
-  };
+  addForm = new FormGroup({
+    title: new FormControl(''),
+    street: new FormControl(''),
+    city: new FormControl(''),
+    area: new FormControl(''),
+    building: new FormControl(''),
+    floor: new FormControl(''),
+    apartment: new FormControl(''),
+    notes: new FormControl(''),
+    isDefault: new FormControl(false),
+  });
   editingId: string | null = null;
-  editForm: Partial<IAddress> = {};
+  editForm = new FormGroup({
+    title: new FormControl(''),
+    street: new FormControl(''),
+    city: new FormControl(''),
+    area: new FormControl(''),
+    building: new FormControl(''),
+    floor: new FormControl(''),
+    apartment: new FormControl(''),
+    notes: new FormControl(''),
+    isDefault: new FormControl(false),
+  });
 
   ngOnInit(): void {
     this._userService.getMe().subscribe({
@@ -49,11 +59,11 @@ export class Account implements OnInit {
   addAddress() {
     this.errorMessage = '';
     this.successMessage = '';
-    this._userService.addAddress(this.addForm as IAddress).subscribe({
+    this._userService.addAddress(this.addForm.value as IAddress).subscribe({
       next: (res) => {
         this.addresses = res.data;
         this.successMessage = res.message;
-        this.addForm = {
+        this.addForm.setValue({
           title: '',
           street: '',
           city: '',
@@ -63,7 +73,7 @@ export class Account implements OnInit {
           apartment: '',
           notes: '',
           isDefault: false,
-        };
+        });
       },
       error: (err) => (this.errorMessage = getApiError(err)),
     });
@@ -71,18 +81,27 @@ export class Account implements OnInit {
 
   startEdit(address: IAddress) {
     this.editingId = address._id;
-    this.editForm = { ...address };
+    this.editForm.setValue({
+      title: address.title,
+      street: address.street || '',
+      city: address.city,
+      area: address.area || '',
+      building: address.building || '',
+      floor: address.floor || '',
+      apartment: address.apartment || '',
+      notes: address.notes || '',
+      isDefault: !!address.isDefault,
+    });
   }
 
   cancelEdit() {
     this.editingId = null;
-    this.editForm = {};
   }
 
   saveEdit() {
     if (!this.editingId) return;
     this.errorMessage = '';
-    this._userService.updateAddress(this.editingId, this.editForm).subscribe({
+    this._userService.updateAddress(this.editingId, this.editForm.value as IAddress).subscribe({
       next: (res) => {
         //update returns the single address - patch it into the list
         this.addresses = this.addresses.map((a) =>

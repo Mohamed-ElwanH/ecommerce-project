@@ -1,13 +1,13 @@
 <h1>Sales report</h1>
 
-<form (ngSubmit)="load()" class="toolbar">
+<form [formGroup]="range" (ngSubmit)="load()" class="toolbar">
   <div class="form-field" style="margin: 0">
     <label for="startDate">From</label>
-    <input id="startDate" type="date" [(ngModel)]="startDate" name="startDate" />
+    <input id="startDate" type="date" formControlName="startDate" />
   </div>
   <div class="form-field" style="margin: 0">
     <label for="endDate">To</label>
-    <input id="endDate" type="date" [(ngModel)]="endDate" name="endDate" />
+    <input id="endDate" type="date" formControlName="endDate" />
   </div>
   <button type="submit" class="btn btn-primary" style="align-self: end">Apply</button>
 </form>
@@ -93,7 +93,7 @@
     <tbody>
       @for (month of report.monthlySales; track month) {
         <tr>
-          <td>{{ monthName(month._id.year, month._id.month) }}</td>
+          <td>{{ monthDate(month._id) | date: 'MMMM y' }}</td>
           <td>{{ month.totalRevenue | number: '1.2-2' }}</td>
           <td>{{ month.totalQuantity }}</td>
           <td>{{ month.totalOrders }}</td>

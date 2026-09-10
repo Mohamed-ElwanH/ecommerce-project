@@ -24,10 +24,10 @@
 }
 
 <h2>Share your experience</h2>
-<form (ngSubmit)="submit()">
+<form [formGroup]="testimonialForm" (ngSubmit)="submit()">
   <div class="form-field">
     <label for="tname">Your name</label>
-    <input id="tname" type="text" [(ngModel)]="form.name" name="name" required />
+    <input id="tname" type="text" formControlName="name" required />
   </div>
   <div class="form-field">
     <label for="tmessage">Your message (10 - 500 characters)</label>
@@ -36,8 +36,7 @@
       rows="4"
       minlength="10"
       maxlength="500"
-      [(ngModel)]="form.message"
-      name="message"
+      formControlName="message"
       required
     ></textarea>
   </div>

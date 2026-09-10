@@ -32,15 +32,15 @@
         <tr>
           @if (editingId === address._id) {
             <td colspan="4">
-              <div class="edit-grid">
-                <input type="text" [(ngModel)]="editForm.title" placeholder="Title" />
-                <input type="text" [(ngModel)]="editForm.street" placeholder="Street" />
-                <input type="text" [(ngModel)]="editForm.city" placeholder="City" />
-                <input type="text" [(ngModel)]="editForm.area" placeholder="Area" />
-                <input type="text" [(ngModel)]="editForm.building" placeholder="Building" />
-                <input type="text" [(ngModel)]="editForm.floor" placeholder="Floor" />
-                <input type="text" [(ngModel)]="editForm.apartment" placeholder="Apartment" />
-                <input type="text" [(ngModel)]="editForm.notes" placeholder="Notes" />
+              <div class="edit-grid" [formGroup]="editForm">
+                <input type="text" formControlName="title" placeholder="Title" />
+                <input type="text" formControlName="street" placeholder="Street" />
+                <input type="text" formControlName="city" placeholder="City" />
+                <input type="text" formControlName="area" placeholder="Area" />
+                <input type="text" formControlName="building" placeholder="Building" />
+                <input type="text" formControlName="floor" placeholder="Floor" />
+                <input type="text" formControlName="apartment" placeholder="Apartment" />
+                <input type="text" formControlName="notes" placeholder="Notes" />
                 <button class="btn btn-sm btn-success" (click)="saveEdit()">Save</button>
                 <button class="btn btn-sm" (click)="cancelEdit()">Cancel</button>
               </div>
@@ -69,43 +69,43 @@
 }
 
 <h3>Add a new address</h3>
-<form (ngSubmit)="addAddress()">
+<form [formGroup]="addForm" (ngSubmit)="addAddress()">
   <div class="edit-grid">
     <div class="form-field">
       <label>Title *</label>
-      <input type="text" [(ngModel)]="addForm.title" name="title" required />
+      <input type="text" formControlName="title" required />
     </div>
     <div class="form-field">
       <label>Street *</label>
-      <input type="text" [(ngModel)]="addForm.street" name="street" required />
+      <input type="text" formControlName="street" required />
     </div>
     <div class="form-field">
       <label>City *</label>
-      <input type="text" [(ngModel)]="addForm.city" name="city" required />
+      <input type="text" formControlName="city" required />
     </div>
     <div class="form-field">
       <label>Area</label>
-      <input type="text" [(ngModel)]="addForm.area" name="area" />
+      <input type="text" formControlName="area" />
     </div>
     <div class="form-field">
       <label>Building</label>
-      <input type="text" [(ngModel)]="addForm.building" name="building" />
+      <input type="text" formControlName="building" />
     </div>
     <div class="form-field">
       <label>Floor</label>
-      <input type="text" [(ngModel)]="addForm.floor" name="floor" />
+      <input type="text" formControlName="floor" />
     </div>
     <div class="form-field">
       <label>Apartment</label>
-      <input type="text" [(ngModel)]="addForm.apartment" name="apartment" />
+      <input type="text" formControlName="apartment" />
     </div>
     <div class="form-field">
       <label>Notes</label>
-      <input type="text" [(ngModel)]="addForm.notes" name="notes" />
+      <input type="text" formControlName="notes" />
     </div>
   </div>
   <label style="font-weight: 400">
-    <input type="checkbox" [(ngModel)]="addForm.isDefault" name="isDefault" />
+    <input type="checkbox" formControlName="isDefault" />
     Set as default address
   </label>
   <button type="submit" class="btn btn-primary">Add address</button>

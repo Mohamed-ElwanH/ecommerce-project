@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user-service';
 import { ICreateUserData } from '../../../core/models/user.model';
 import { getApiError } from '../../../core/utils/get-api-error';
 
 @Component({
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   selector: 'app-createadmin',
   styleUrl: './createadmin.css',
   templateUrl: './createadmin.html',
 })
 export class Createadmin {
   constructor(private _userService: UserService) {}
-  form = {
-    name: '',
-    password: '',
-    gender: 'male' as 'male' | 'female',
-  };
+  adminForm = new FormGroup({
+    name: new FormControl(''),
+    password: new FormControl(''),
+    gender: new FormControl('male'),
+  });
   successMessage = '';
   errorMessage = '';
 
@@ -24,12 +24,14 @@ export class Createadmin {
     this.successMessage = '';
     this.errorMessage = '';
     //POST /user/admin (createUser would create a plain 'user' role account)
-    this._userService.createAdmin(this.form as ICreateUserData).subscribe({
-      next: (res) => {
-        this.successMessage = res.message;
-        this.form = { name: '', password: '', gender: 'male' };
-      },
-      error: (err) => (this.errorMessage = getApiError(err)),
-    });
+    this._userService
+      .createAdmin(this.adminForm.value as ICreateUserData)
+      .subscribe({
+        next: (res) => {
+          this.successMessage = res.message;
+          this.adminForm.setValue({ name: '', password: '', gender: 'male' });
+        },
+        error: (err) => (this.errorMessage = getApiError(err)),
+      });
   }
 }

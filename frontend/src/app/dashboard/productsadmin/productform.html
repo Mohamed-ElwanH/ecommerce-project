@@ -5,26 +5,26 @@
   <p class="alert alert-danger">{{ errorMessage }}</p>
 }
 
-<form (ngSubmit)="submit()">
+<form [formGroup]="productForm" (ngSubmit)="submit()">
   <div class="form-field">
     <label>Name</label>
-    <input type="text" [(ngModel)]="form.name" name="name" required (input)="onNameChange()" />
+    <input type="text" formControlName="name" required (input)="onNameChange()" />
   </div>
   <div class="form-field">
     <label>Description</label>
-    <textarea rows="3" [(ngModel)]="form.desc" name="desc" required></textarea>
+    <textarea rows="3" formControlName="desc" required></textarea>
   </div>
   <div class="form-field">
     <label>Price</label>
-    <input type="number" min="0" [(ngModel)]="form.price" name="price" required />
+    <input type="number" min="0" formControlName="price" required />
   </div>
   <div class="form-field">
     <label>Stock</label>
-    <input type="number" min="0" [(ngModel)]="form.stock" name="stock" required />
+    <input type="number" min="0" formControlName="stock" required />
   </div>
   <div class="form-field">
     <label>Category</label>
-    <select [(ngModel)]="form.category" name="category" required>
+    <select formControlName="category" required>
       <option value="" disabled>Select category</option>
       @for (category of categories; track category) {
         <option [value]="category._id">{{ category.name }}</option>
@@ -33,7 +33,7 @@
   </div>
   <div class="form-field">
     <label>Subcategories (of the selected category)</label>
-    @if (!form.category) {
+    @if (!productForm.value.category) {
       <small>Select a category first</small>
     }
     @for (sub of subCategoriesOfSelectedCategory; track sub) {
@@ -50,13 +50,13 @@
   </div>
   <div class="form-field">
     <label>Slug (url)</label>
-    <input type="text" [(ngModel)]="form.slug" name="slug" required />
+    <input type="text" formControlName="slug" required />
   </div>
 
   @if (!editingId) {
     <div class="form-field">
       <label>Images (png/jpg/jpeg, max 2MB each)</label>
-      <input type="file" id="images" #imagesInput multiple accept=".png,.jpg,.jpeg" />
+      <input type="file" id="images" multiple accept=".png,.jpg,.jpeg" (change)="onImagesChange($event)" />
     </div>
   } @else {
     <p class="alert alert-warning">Images can't be changed here yet.</p>
@@ -64,18 +64,18 @@
 
   @if (editingId) {
     <label style="font-weight: 400">
-      <input type="checkbox" [(ngModel)]="form.isActive" name="isActive" /> Active (visible in
+      <input type="checkbox" formControlName="isActive" /> Active (visible in
       store)
     </label>
     <label style="font-weight: 400">
-      <input type="checkbox" [(ngModel)]="form.isDeleted" name="isDeleted" /> Deleted
+      <input type="checkbox" formControlName="isDeleted" /> Deleted
     </label>
   }
   <label style="font-weight: 400">
-    <input type="checkbox" [(ngModel)]="form.isTopSale" name="isTopSale" /> Top sale
+    <input type="checkbox" formControlName="isTopSale" /> Top sale
   </label>
   <label style="font-weight: 400">
-    <input type="checkbox" [(ngModel)]="form.isNewArrival" name="isNewArrival" /> New arrival
+    <input type="checkbox" formControlName="isNewArrival" /> New arrival
   </label>
 
   <div>

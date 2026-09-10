@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ProductService } from '../../core/services/product-service';
 import { IProduct } from '../../core/models/product.model';
 import { Product } from './product/product';
@@ -7,10 +8,9 @@ import { CategoryService } from '../../core/services/category-service';
 import { SubCategoryService } from '../../core/services/subCategory-service';
 import { ICategory } from '../../core/models/category.model';
 import { ISubCategory } from '../../core/models/subCategory.model';
-import { FormsModule } from '@angular/forms';
 
 @Component({
-  imports: [Product, FormsModule],
+  imports: [Product, ReactiveFormsModule],
   selector: 'app-productslist',
   styleUrl: './productslist.css',
   templateUrl: './productslist.html',
@@ -27,14 +27,24 @@ export class Productslist implements OnInit {
   subCategories: ISubCategory[] = [];
   selectedCategory = '';
   selectedSubCategory = '';
+  filters = new FormGroup({
+    category: new FormControl(''),
+    subCategory: new FormControl(''),
+  });
 
   ngOnInit(): void {
+    this.filters.valueChanges.subscribe((v) => {
+      this.selectedCategory = v.category || '';
+      this.selectedSubCategory = v.subCategory || '';
+    });
     //arriving from the navbar/categories page passes ?category=&subCategory=;
     //subscribe (not snapshot) so switching categories in the navbar while
     //already on this page re-filters
     this._activeRoute.queryParamMap.subscribe((params) => {
-      this.selectedCategory = params.get('category') || '';
-      this.selectedSubCategory = params.get('subCategory') || '';
+      this.filters.setValue({
+        category: params.get('category') || '',
+        subCategory: params.get('subCategory') || '',
+      });
     });
     this._productService.getAllProducts().subscribe({
       next: (res) => {
@@ -75,6 +85,7 @@ export class Productslist implements OnInit {
       )
     ) {
       this.selectedSubCategory = '';
+      this.filters.patchValue({ subCategory: '' });
     }
   }
 

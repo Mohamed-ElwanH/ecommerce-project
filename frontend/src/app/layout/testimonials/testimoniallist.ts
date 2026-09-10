@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TestimonialService } from '../../core/services/testimonial-service';
-import { ITestimonial } from '../../core/models/testimonial.model';
+import {
+  ITestimonial,
+  ICreateTestimonialData,
+} from '../../core/models/testimonial.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, ReactiveFormsModule],
   selector: 'app-testimoniallist',
   styleUrl: './testimoniallist.css',
   templateUrl: './testimoniallist.html',
@@ -17,7 +20,10 @@ export class Testimoniallist implements OnInit {
   errorMessage = '';
   successMessage = '';
 
-  form = { name: '', message: '' };
+  testimonialForm = new FormGroup({
+    name: new FormControl(''),
+    message: new FormControl(''),
+  });
 
   ngOnInit(): void {
     this.loadApproved();
@@ -33,12 +39,14 @@ export class Testimoniallist implements OnInit {
   submit() {
     this.errorMessage = '';
     this.successMessage = '';
-    this._testimonialService.createTestimonial(this.form).subscribe({
-      next: () => {
-        this.successMessage = 'ok';
-        this.form = { name: '', message: '' };
-      },
-      error: (err) => (this.errorMessage = getApiError(err)),
-    });
+    this._testimonialService
+      .createTestimonial(this.testimonialForm.value as ICreateTestimonialData)
+      .subscribe({
+        next: () => {
+          this.successMessage = 'ok';
+          this.testimonialForm.setValue({ name: '', message: '' });
+        },
+        error: (err) => (this.errorMessage = getApiError(err)),
+      });
   }
 }

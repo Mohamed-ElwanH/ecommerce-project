@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart-service';
 import { AuthService } from '../../core/services/auth-service';
 import { ICartItem, IGuestCartItem } from '../../core/models/cart.model';
@@ -9,7 +8,7 @@ import { environment } from '../../../enviroments/env';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule],
+  imports: [RouterLink, DecimalPipe],
   selector: 'app-cartpage',
   styleUrl: './cartpage.css',
   templateUrl: './cartpage.html',
@@ -65,7 +64,8 @@ export class Cartpage implements OnInit {
     return images && images.length ? this.staticURL + images[0] : '';
   }
 
-  changeQuantity(item: ICartItem) {
+  changeQuantity(item: ICartItem, e: any) {
+    item.quantity = Number(e.target.value);
     if (item.quantity < 1) item.quantity = 1;
     this._cartService
       .updateItemQuantity(item.product._id, item.quantity)
@@ -75,7 +75,8 @@ export class Cartpage implements OnInit {
       });
   }
 
-  changeGuestQuantity(item: IGuestCartItem) {
+  changeGuestQuantity(item: IGuestCartItem, e: any) {
+    item.quantity = Number(e.target.value);
     if (item.quantity < 1) item.quantity = 1;
     this._cartService.updateItemQuantity(item.productId, item.quantity);
     this.guestItems = this._cartService.getGuestCart();
