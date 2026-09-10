@@ -1,0 +1,45 @@
+<h1>Testimonials</h1>
+
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+@if (testimonials.length) {
+  <div class="grid">
+    @for (testimonial of testimonials; track testimonial) {
+      <div class="card">
+        <div class="card-body">
+          <strong>{{ testimonial.name }}</strong>
+          <small> {{ testimonial.createdAt | date: 'mediumDate' }}</small>
+          <p>{{ testimonial.message }}</p>
+        </div>
+      </div>
+    }
+  </div>
+} @else {
+  <p>No approved testimonials yet - be the first to share your experience!</p>
+}
+
+<h2>Share your experience</h2>
+<form (ngSubmit)="submit()">
+  <div class="form-field">
+    <label for="tname">Your name</label>
+    <input id="tname" type="text" [(ngModel)]="form.name" name="name" required />
+  </div>
+  <div class="form-field">
+    <label for="tmessage">Your message (10 - 500 characters)</label>
+    <textarea
+      id="tmessage"
+      rows="4"
+      minlength="10"
+      maxlength="500"
+      [(ngModel)]="form.message"
+      name="message"
+      required
+    ></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit testimonial</button>
+</form>

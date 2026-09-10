@@ -1,0 +1,112 @@
+<h1>My account</h1>
+
+<div class="profile">
+  <p><strong>Name:</strong> {{ userName }}</p>
+  @if (userEmail) {
+    <p><strong>Email:</strong> {{ userEmail }}</p>
+  }
+  <p><strong>Role:</strong> {{ userRole }}</p>
+  <a routerLink="/my-orders">My orders</a>
+</div>
+
+<h2>My addresses</h2>
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+@if (addresses.length) {
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Address</th>
+        <th>Default</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (address of addresses; track address) {
+        <tr>
+          @if (editingId === address._id) {
+            <td colspan="4">
+              <div class="edit-grid">
+                <input type="text" [(ngModel)]="editForm.title" placeholder="Title" />
+                <input type="text" [(ngModel)]="editForm.street" placeholder="Street" />
+                <input type="text" [(ngModel)]="editForm.city" placeholder="City" />
+                <input type="text" [(ngModel)]="editForm.area" placeholder="Area" />
+                <input type="text" [(ngModel)]="editForm.building" placeholder="Building" />
+                <input type="text" [(ngModel)]="editForm.floor" placeholder="Floor" />
+                <input type="text" [(ngModel)]="editForm.apartment" placeholder="Apartment" />
+                <input type="text" [(ngModel)]="editForm.notes" placeholder="Notes" />
+                <button class="btn btn-sm btn-success" (click)="saveEdit()">Save</button>
+                <button class="btn btn-sm" (click)="cancelEdit()">Cancel</button>
+              </div>
+            </td>
+          } @else {
+            <td>{{ address.title }}</td>
+            <td>
+              {{ address.street }}, {{ address.city }}
+              @if (address.area) {, {{ address.area }} }
+              @if (address.building) {, bldg {{ address.building }} }
+              @if (address.apartment) {, apt {{ address.apartment }} }
+            </td>
+            <td>@if (address.isDefault) { ✓ }</td>
+            <td>
+              <button class="btn btn-sm" (click)="setDefault(address)">Set default</button>
+              <button class="btn btn-sm" (click)="startEdit(address)">Edit</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteAddress(address)">Delete</button>
+            </td>
+          }
+        </tr>
+      }
+    </tbody>
+  </table>
+} @else {
+  <p>No addresses on record yet - add one below.</p>
+}
+
+<h3>Add a new address</h3>
+<form (ngSubmit)="addAddress()">
+  <div class="edit-grid">
+    <div class="form-field">
+      <label>Title *</label>
+      <input type="text" [(ngModel)]="addForm.title" name="title" required />
+    </div>
+    <div class="form-field">
+      <label>Street *</label>
+      <input type="text" [(ngModel)]="addForm.street" name="street" required />
+    </div>
+    <div class="form-field">
+      <label>City *</label>
+      <input type="text" [(ngModel)]="addForm.city" name="city" required />
+    </div>
+    <div class="form-field">
+      <label>Area</label>
+      <input type="text" [(ngModel)]="addForm.area" name="area" />
+    </div>
+    <div class="form-field">
+      <label>Building</label>
+      <input type="text" [(ngModel)]="addForm.building" name="building" />
+    </div>
+    <div class="form-field">
+      <label>Floor</label>
+      <input type="text" [(ngModel)]="addForm.floor" name="floor" />
+    </div>
+    <div class="form-field">
+      <label>Apartment</label>
+      <input type="text" [(ngModel)]="addForm.apartment" name="apartment" />
+    </div>
+    <div class="form-field">
+      <label>Notes</label>
+      <input type="text" [(ngModel)]="addForm.notes" name="notes" />
+    </div>
+  </div>
+  <label style="font-weight: 400">
+    <input type="checkbox" [(ngModel)]="addForm.isDefault" name="isDefault" />
+    Set as default address
+  </label>
+  <button type="submit" class="btn btn-primary">Add address</button>
+</form>

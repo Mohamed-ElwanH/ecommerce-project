@@ -1,0 +1,48 @@
+<nav>
+  <a routerLink="/home" routerLinkActive="active">Home</a>
+
+  @for (category of categories; track category) {
+    <div class="nav-dropdown">
+      <a [routerLink]="['/products-list']" [queryParams]="{ category: category._id }">
+        {{ category.name }}
+      </a>
+      @if (subCategoriesOf(category._id).length) {
+        <div class="dropdown-menu">
+          @for (sub of subCategoriesOf(category._id); track sub) {
+            <a
+              [routerLink]="['/products-list']"
+              [queryParams]="{ category: category._id, subCategory: sub._id }"
+            >
+              {{ sub.name }}
+            </a>
+          }
+        </div>
+      }
+    </div>
+  }
+
+  <a routerLink="/products-list" routerLinkActive="active">All products</a>
+  <a routerLink="/categories" routerLinkActive="active">Categories</a>
+  <a routerLink="/testimonials" routerLinkActive="active">Testimonials</a>
+  @if (isAdmin) {
+    <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+  }
+
+  <span class="spacer"></span>
+
+  @if (cartCount > 0) {
+    <a routerLink="/cart" routerLinkActive="active">Cart ({{ cartCount }})</a>
+  } @else {
+    <a routerLink="/cart" routerLinkActive="active">Cart</a>
+  }
+
+  @if (!name) {
+    <a routerLink="/login" routerLinkActive="active">Login</a>
+    <a routerLink="/signup" routerLinkActive="active">Sign-up</a>
+  } @else {
+    <span class="welcome">Welcome {{ name }}</span>
+    <a routerLink="/account" routerLinkActive="active">My account</a>
+    <a routerLink="/my-orders" routerLinkActive="active">My orders</a>
+    <button type="button" class="btn btn-sm" (click)="logout()">Logout</button>
+  }
+</nav>

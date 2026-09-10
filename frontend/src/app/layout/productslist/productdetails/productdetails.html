@@ -1,0 +1,53 @@
+@if (myProduct) {
+  <div class="details">
+    <img [src]="firstImage(myProduct)" [alt]="myProduct.name" />
+    <div class="info">
+      <h1>{{ myProduct.name }}</h1>
+      <p>{{ myProduct.desc }}</p>
+      <p><strong>Price:</strong> {{ myProduct.price | number: '1.2-2' }} EGP</p>
+      @if (myProduct.stock === 0) {
+        <p class="alert alert-warning">Out of stock</p>
+      } @else if (myProduct.stock <= 3) {
+        <p class="alert alert-warning">
+          Hurry - only {{ myProduct.stock }} left in stock!
+        </p>
+      } @else {
+        <p><strong>Stock:</strong> {{ myProduct.stock }}</p>
+      }
+      @if (myProduct.stock > 0) {
+        <div class="toolbar">
+          <label for="qty" style="margin: 0">Qty</label>
+          <input
+            id="qty"
+            type="number"
+            min="1"
+            [max]="myProduct.stock"
+            [(ngModel)]="quantity"
+            style="width: 90px"
+          />
+          <button class="btn btn-primary" (click)="addToCart()">Add to cart</button>
+          @if (added) {
+            <span class="alert alert-success" style="margin: 0">Added to cart</span>
+          }
+          @if (cartMessage) {
+            <span class="alert alert-danger" style="margin: 0">{{ cartMessage }}</span>
+          }
+        </div>
+      }
+      <a routerLink="/cart" class="btn">Go to cart</a>
+    </div>
+  </div>
+} @else {
+  <p class="alert alert-danger">Product not found</p>
+}
+
+@if (relatedProducts.length) {
+  <div class="related">
+    <h2>Related products</h2>
+    <div class="grid">
+      @for (product of relatedProducts; track product) {
+        <app-product [myProduct]="product"></app-product>
+      }
+    </div>
+  </div>
+}

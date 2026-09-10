@@ -1,0 +1,14 @@
+{
+  "categories": [
+    { "_id": { "$oid": "6600000000000000000000a1" }, "name": "Electronics", "slug": "electronics", "isActive": true, "isDeleted": false },
+    { "_id": { "$oid": "6600000000000000000000a2" }, "name": "Fashion", "slug": "fashion", "isActive": true, "isDeleted": false },
+    { "_id": { "$oid": "6600000000000000000000a3" }, "name": "Home & Kitchen", "slug": "home-kitchen", "isActive": true, "isDeleted": false },
+    { "_id": { "$oid": "6600000000000000000000a4" }, "name": "Sports", "slug": "sports", "isActive": true, "isDeleted": false }
+  ],
+  "subcategories": [
+    { "_id": { "$oid": "6600000000000000000000b1" }, "name": "Gadgets", "slug": "gadgets", "category": { "$oid": "6600000000000000000000a1" }, "isActive": true, "isDeleted": false },
+    { "_id": { "$oid": "6600000000000000000000b2" }, "name": "Apparel", "slug": "apparel", "category": { "$oid": "6600000000000000000000a2" }, "isActive": true, "isDeleted": false },
+    { "_id": { "$oid": "6600000000000000000000b3" }, "name": "Essentials", "slug": "essentials", "category": { "$oid": "6600000000000000000000a3" }, "isActive": true, "isDeleted": false },
+    { "_id": { "$oid": "6600000000000000000000b4" }, "name": "Equipment", "slug": "equipment", "category": { "$oid": "6600000000000000000000a4" }, "isActive": true, "isDeleted": false }
+  ]
+}

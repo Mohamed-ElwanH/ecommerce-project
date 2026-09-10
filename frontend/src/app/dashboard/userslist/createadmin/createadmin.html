@@ -1,0 +1,27 @@
+<h1>Create admin</h1>
+
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<form (ngSubmit)="submit()">
+  <div class="form-field">
+    <label>Username</label>
+    <input type="text" [(ngModel)]="form.name" name="name" required />
+  </div>
+  <div class="form-field">
+    <label>Password</label>
+    <input type="password" [(ngModel)]="form.password" name="password" required />
+  </div>
+  <div class="form-field">
+    <label>Gender</label>
+    <select [(ngModel)]="form.gender" name="gender">
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Create admin</button>
+</form>

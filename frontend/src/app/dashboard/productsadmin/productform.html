@@ -1,0 +1,89 @@
+<a routerLink="/dashboard/products">← Back to products</a>
+<h1>{{ editingId ? 'Edit product' : 'Add product' }}</h1>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<form (ngSubmit)="submit()">
+  <div class="form-field">
+    <label>Name</label>
+    <input type="text" [(ngModel)]="form.name" name="name" required (input)="onNameChange()" />
+  </div>
+  <div class="form-field">
+    <label>Description</label>
+    <textarea rows="3" [(ngModel)]="form.desc" name="desc" required></textarea>
+  </div>
+  <div class="form-field">
+    <label>Price</label>
+    <input type="number" min="0" [(ngModel)]="form.price" name="price" required />
+  </div>
+  <div class="form-field">
+    <label>Stock</label>
+    <input type="number" min="0" [(ngModel)]="form.stock" name="stock" required />
+  </div>
+  <div class="form-field">
+    <label>Category</label>
+    <select [(ngModel)]="form.category" name="category" required>
+      <option value="" disabled>Select category</option>
+      @for (category of categories; track category) {
+        <option [value]="category._id">{{ category.name }}</option>
+      }
+    </select>
+  </div>
+  <div class="form-field">
+    <label>Subcategories (of the selected category)</label>
+    @if (!form.category) {
+      <small>Select a category first</small>
+    }
+    @for (sub of subCategoriesOfSelectedCategory; track sub) {
+      <label style="font-weight: 400">
+        <input
+          type="checkbox"
+          [value]="sub._id"
+          [checked]="selectedSubCategories.includes(sub._id)"
+          (change)="toggleSub(sub._id, $any($event.target).checked)"
+        />
+        {{ sub.name }}
+      </label>
+    }
+  </div>
+  <div class="form-field">
+    <label>Slug (url)</label>
+    <input type="text" [(ngModel)]="form.slug" name="slug" required />
+  </div>
+
+  @if (!editingId) {
+    <div class="form-field">
+      <label>Images (png/jpg/jpeg, max 2MB each)</label>
+      <input type="file" id="images" #imagesInput multiple accept=".png,.jpg,.jpeg" />
+    </div>
+  } @else {
+    <p class="alert alert-warning">
+      Note: the backend update route does not accept image uploads, so existing
+      images cannot be changed from here.
+    </p>
+  }
+
+  @if (editingId) {
+    <label style="font-weight: 400">
+      <input type="checkbox" [(ngModel)]="form.isActive" name="isActive" /> Active (visible in
+      store)
+    </label>
+    <label style="font-weight: 400">
+      <input type="checkbox" [(ngModel)]="form.isDeleted" name="isDeleted" /> Deleted
+    </label>
+  }
+  <label style="font-weight: 400">
+    <input type="checkbox" [(ngModel)]="form.isTopSale" name="isTopSale" /> Top sale
+  </label>
+  <label style="font-weight: 400">
+    <input type="checkbox" [(ngModel)]="form.isNewArrival" name="isNewArrival" /> New arrival
+  </label>
+
+  <div>
+    <button type="submit" class="btn btn-primary">
+      {{ editingId ? 'Save changes' : 'Create product' }}
+    </button>
+  </div>
+</form>

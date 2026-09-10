@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    email: { type: String, required: true, unique: true },
+    //optional: the app identifies accounts by username (name), not email
+    email: { type: String, unique: true, sparse: true },
     role: {
       type: String,
       required: true,

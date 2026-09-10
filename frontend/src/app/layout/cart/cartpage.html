@@ -1,0 +1,142 @@
+<h1>Cart</h1>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+@if (isLoggedIn) {
+  @if (items.length) {
+    @if (readyItems.length) {
+      <h2>Ready for checkout</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of readyItems; track item) {
+            <tr>
+              <td>
+                @if (item.product) {
+                  <a [routerLink]="['/products-list', item.product.slug]">{{ item.product.name }}</a>
+                }
+              </td>
+              <td>{{ item.price | number: '1.2-2' }}</td>
+              <td>
+                <input
+                  type="number"
+                  min="1"
+                  [(ngModel)]="item.quantity"
+                  (change)="changeQuantity(item)"
+                  style="width: 80px"
+                />
+              </td>
+              <td>{{ item.price * item.quantity | number: '1.2-2' }}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" (click)="remove(item)">Remove</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <h3>Total: {{ readyTotal() | number: '1.2-2' }} EGP</h3>
+      <a routerLink="/checkout" class="btn btn-primary">Checkout</a>
+    }
+
+    @if (priceChangedItems.length) {
+      <h2 class="price-changed">Price changed - action needed</h2>
+      <p class="alert alert-warning">
+        These products changed price since you added them. Confirm the new price
+        to include them in checkout, or remove them.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Old price</th>
+            <th>New price</th>
+            <th>Quantity</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of priceChangedItems; track item) {
+            <tr>
+              <td>
+                @if (item.product) {
+                  <a [routerLink]="['/products-list', item.product.slug]">{{ item.product.name }}</a>
+                }
+              </td>
+              <td>{{ item.price | number: '1.2-2' }}</td>
+              <td>{{ item.product?.price | number: '1.2-2' }}</td>
+              <td>
+                <input
+                  type="number"
+                  min="1"
+                  [(ngModel)]="item.quantity"
+                  (change)="changeQuantity(item)"
+                  style="width: 80px"
+                />
+              </td>
+              <td>
+                <button class="btn btn-sm btn-success" (click)="confirmPrice(item)">
+                  Confirm new price
+                </button>
+                <button class="btn btn-sm btn-danger" (click)="remove(item)">Remove</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  } @else {
+    <p>Your cart is empty - <a routerLink="/products-list">browse products</a></p>
+  }
+} @else {
+  @if (guestItems.length) {
+    <p class="alert alert-warning">
+      You are shopping as a guest - <a routerLink="/login">login</a> or
+      <a routerLink="/signup">sign up</a> to check out (your cart will be merged).
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of guestItems; track item) {
+          <tr>
+            <td><a [routerLink]="['/products-list', item.slug]">{{ item.name }}</a></td>
+            <td>{{ item.price | number: '1.2-2' }}</td>
+            <td>
+              <input
+                type="number"
+                min="1"
+                [(ngModel)]="item.quantity"
+                (change)="changeGuestQuantity(item)"
+                style="width: 80px"
+              />
+            </td>
+            <td>{{ item.price * item.quantity | number: '1.2-2' }}</td>
+            <td>
+              <button class="btn btn-sm btn-danger" (click)="removeGuest(item)">Remove</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <h3>Total: {{ guestTotal() | number: '1.2-2' }} EGP</h3>
+  } @else {
+    <p>Your cart is empty - <a routerLink="/products-list">browse products</a></p>
+  }
+}

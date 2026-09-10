@@ -1,0 +1,45 @@
+<h1>My orders</h1>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+@if (orders.length) {
+  @for (order of orders; track order) {
+    <div class="order">
+      <div class="toolbar">
+        <strong>Order {{ order._id.slice(-6) }}</strong>
+        <span class="badge">{{ order.status }}</span>
+        <span>{{ order.createdAt | date: 'medium' }}</span>
+        <strong>{{ order.totalPrice | number: '1.2-2' }} EGP</strong>
+        @if (canCancel(order)) {
+          <button class="btn btn-sm btn-danger" (click)="cancelOrder(order)">Cancel order</button>
+        }
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price at order time</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of order.products; track item) {
+            <tr>
+              <td>{{ productName(item.productId) }}</td>
+              <td>{{ item.priceAtOrderTime | number: '1.2-2' }}</td>
+              <td>{{ item.quantity }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <p>
+        <strong>Deliver to:</strong> {{ order.address.title }}, {{ order.address.street }},
+        {{ order.address.city }}
+      </p>
+    </div>
+  }
+} @else {
+  <p>You have no orders yet - <a routerLink="/products-list">start shopping</a></p>
+}

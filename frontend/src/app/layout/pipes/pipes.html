@@ -1,0 +1,55 @@
+<h1>Pipes</h1>
+
+<h3>String Pipes</h3>
+
+<p>{{ name | uppercase }}</p>
+<p>{{ nameTwo | lowercase }}</p>
+<p>{{ nameTwo | titlecase }}</p>
+<h5>Slice pipe</h5>
+
+<p>{{'Angular' | slice:0:3}}</p>
+<h3>Date</h3>
+<p>{{ myDate | date: 'longDate' }}</p>
+<p>{{ myDate | date: 'shortDate' }}</p>
+<p>{{ myDate | date: 'dd/MM/yyyy HH:mm:ss' }}</p>
+<p>{{ myDate | date: 'dd/MM/yy HH:mm:ss' }}</p>
+
+<p>{{ myDate | date: 'dd/MMM/yyyy HH:mm:ss' }}</p>
+
+<p>{{ myDate | date: 'dd/MMMM/yyyy HH:mm:ss' }}</p>
+
+<p>{{ grade | percent }}</p>
+
+<p>{{ grade | percent: '1.2-3' }}</p>
+<!--min number before the dot then min mumber after the dot then max number after the dot-->
+
+<h3>Currency pipe</h3>
+
+<p>{{ price | currency }}</p>
+
+<p>{{ price | currency: 'EUR' }}</p>
+<p>{{ price | currency: 'LE' }}</p>
+<p>{{ price | currency: 'USD' : false : '1.2-3' }}</p>
+<!--false makes it not turn into a symbol-->
+
+<h3>Number pipe</h3>
+
+<p>{{ price | number }}</p>
+
+<p>{{ price | number: '1.0-2' }}</p>
+
+<h3>JSON pipe</h3>
+
+<p>{{ {name: 'Angular', version: 21} | json }}</p>
+
+<h3>Async data</h3>
+
+<p>{{asyncData | async}}</p>
+
+<h3>Chain</h3>
+
+<p> {{myDate | date:'longDate' | uppercase}}</p>
+
+<h3> Custom decorators</h3>
+
+<p> {{'asd asd asd ' | noSpace}}</p>

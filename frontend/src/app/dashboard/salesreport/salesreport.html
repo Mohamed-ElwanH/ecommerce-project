@@ -1,0 +1,104 @@
+<h1>Sales report</h1>
+
+<form (ngSubmit)="load()" class="toolbar">
+  <div class="form-field" style="margin: 0">
+    <label for="startDate">From</label>
+    <input id="startDate" type="date" [(ngModel)]="startDate" name="startDate" />
+  </div>
+  <div class="form-field" style="margin: 0">
+    <label for="endDate">To</label>
+    <input id="endDate" type="date" [(ngModel)]="endDate" name="endDate" />
+  </div>
+  <button type="submit" class="btn btn-primary" style="align-self: end">Apply</button>
+</form>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+@if (stats) {
+  <div class="stats">
+    <div class="stat">
+      <span class="stat-value">{{ stats.numberOfOrders }}</span>
+      <span>Orders</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">{{ stats.totalSalesAmount | number: '1.2-2' }}</span>
+      <span>Total sales (EGP)</span>
+    </div>
+    <div class="stat">
+      <span class="stat-value">{{ stats.totalQuantitySold }}</span>
+      <span>Items sold</span>
+    </div>
+  </div>
+} @else if (report) {
+  <p class="alert alert-warning">No sales in the selected period.</p>
+}
+
+@if (report?.topProducts?.length) {
+  <h2>Top products</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Revenue</th>
+        <th>Quantity sold</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (product of report.topProducts; track product) {
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.revenue | number: '1.2-2' }}</td>
+          <td>{{ product.totalQuantity }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+@if (report?.topUsers?.length) {
+  <h2>Top customers</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Total spent</th>
+        <th>Orders</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of report.topUsers; track user) {
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.totalSpent | number: '1.2-2' }}</td>
+          <td>{{ user.totalOrders }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+@if (report?.monthlySales?.length) {
+  <h2>Monthly sales</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Revenue</th>
+        <th>Quantity</th>
+        <th>Orders</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (month of report.monthlySales; track month) {
+        <tr>
+          <td>{{ monthName(month._id.year, month._id.month) }}</td>
+          <td>{{ month.totalRevenue | number: '1.2-2' }}</td>
+          <td>{{ month.totalQuantity }}</td>
+          <td>{{ month.totalOrders }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

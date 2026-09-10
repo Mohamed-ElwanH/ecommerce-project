@@ -1,0 +1,52 @@
+<h1>Products</h1>
+
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<div class="toolbar">
+  <a routerLink="/dashboard/products/new" class="btn btn-primary">Add product</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Active</th>
+      <th>Deleted</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (product of products; track product) {
+      <tr>
+        <td>
+          @if (firstImage(product)) {
+            <img [src]="firstImage(product)" alt="" class="thumb" />
+          }
+        </td>
+        <td>{{ product.name }}</td>
+        <td>{{ categoryName(product.category) }}</td>
+        <td>{{ product.price | number: '1.2-2' }}</td>
+        <td>{{ product.stock }}</td>
+        <td>@if (product.isActive) { ✓ }</td>
+        <td>@if (product.isDeleted) { ✓ }</td>
+        <td>
+          <a
+            [routerLink]="['/dashboard/products', product._id, 'edit']"
+            class="btn btn-sm"
+            >Edit</a
+          >
+          <button class="btn btn-sm btn-danger" (click)="deleteProduct(product)">Delete</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
