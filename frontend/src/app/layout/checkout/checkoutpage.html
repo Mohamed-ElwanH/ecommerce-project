@@ -1,0 +1,73 @@
+<h1>Checkout</h1>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+@if (!addresses.length) {
+  <p class="alert alert-warning">
+    You have no saved addresses yet -
+    <a routerLink="/account">add one in your account</a> first.
+  </p>
+} @else {
+  <h3>Delivery address</h3>
+  <div class="addresses">
+    @for (address of addresses; track address) {
+      <label class="address-option">
+        <input
+          type="radio"
+          name="address"
+          [value]="address._id"
+          [(ngModel)]="selectedAddressId"
+        />
+        <span>
+          <strong>{{ address.title }}</strong> - {{ address.street }},
+          {{ address.city }} @if (address.area) {, {{ address.area }} }
+          @if (address.isDefault) {
+            <span class="badge">default</span>
+          }
+        </span>
+      </label>
+    }
+  </div>
+}
+
+@if (unconfirmedItems.length) {
+  <p class="alert alert-warning">
+    {{ unconfirmedItems.length }} item(s) had a price change and are not included
+    until you confirm the new price in the
+    <a routerLink="/cart">cart</a>.
+  </p>
+}
+
+@if (confirmedItems.length) {
+  <h3>Order summary</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of confirmedItems; track item) {
+        <tr>
+          <td>{{ item.product?.name }}</td>
+          <td>{{ item.price | number: '1.2-2' }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.price * item.quantity | number: '1.2-2' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+  <h3>Total: {{ total() | number: '1.2-2' }} EGP</h3>
+  <button class="btn btn-primary" (click)="placeOrder()" [disabled]="placing || !addresses.length">
+    {{ placing ? 'Placing order...' : 'Place order' }}
+  </button>
+} @else if (cart?.items?.length) {
+  <p>Nothing ready for checkout - see the <a routerLink="/cart">cart</a>.</p>
+} @else {
+  <p>Your cart is empty - <a routerLink="/products-list">browse products</a></p>
+}

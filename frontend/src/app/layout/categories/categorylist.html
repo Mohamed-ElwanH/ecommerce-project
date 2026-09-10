@@ -1,0 +1,30 @@
+<h1>Categories</h1>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<div class="grid">
+  @for (category of categories; track category) {
+    <div class="card">
+      <div class="card-body">
+        <h3>{{ category.name }}</h3>
+        @if (subCategoriesOf(category._id).length) {
+          <ul>
+            @for (sub of subCategoriesOf(category._id); track sub) {
+              <li>{{ sub.name }}</li>
+            }
+          </ul>
+        }
+        <a
+          [routerLink]="['/products-list']"
+          [queryParams]="{ category: category._id }"
+          class="btn btn-primary"
+          >Browse products</a
+        >
+      </div>
+    </div>
+  } @empty {
+    <p>No categories yet.</p>
+  }
+</div>

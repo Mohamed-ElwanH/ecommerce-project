@@ -1,0 +1,16 @@
+<h1>Login</h1>
+
+<form [formGroup]="loginForm" (ngSubmit)="login()">
+  <div class="form-field">
+    <label for="name">Username</label>
+    <input formControlName="name" type="text" id="name" placeholder="Enter username" />
+  </div>
+  <div class="form-field">
+    <label for="password">Password</label>
+    <input formControlName="password" type="password" id="password" placeholder="Password" />
+  </div>
+  @if (errorMessage) {
+    <p class="alert alert-danger">{{ errorMessage }}</p>
+  }
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -1,0 +1,43 @@
+<section>
+  <h1>Welcome to Mystore</h1>
+  <p>Browse our catalog, add products to your cart and place an order.</p>
+  <a routerLink="/products-list" class="btn btn-primary">Shop now</a>
+</section>
+
+@if (topSales.length) {
+  <section>
+    <h2>Top sales</h2>
+    <div class="grid">
+      @for (product of topSales; track product) {
+        <app-product [myProduct]="product"></app-product>
+      }
+    </div>
+  </section>
+}
+
+@if (newArrivals.length) {
+  <section>
+    <h2>New arrivals</h2>
+    <div class="grid">
+      @for (product of newArrivals; track product) {
+        <app-product [myProduct]="product"></app-product>
+      }
+    </div>
+  </section>
+}
+
+@if (testimonials.length) {
+  <section>
+    <h2>What customers say</h2>
+    <div class="grid">
+      @for (testimonial of testimonials; track testimonial) {
+        <div class="card">
+          <div class="card-body">
+            <strong>{{ testimonial.name }}</strong>
+            <p>{{ testimonial.message }}</p>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+}

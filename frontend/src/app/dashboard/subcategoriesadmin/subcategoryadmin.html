@@ -1,0 +1,69 @@
+<h1>Subcategories</h1>
+
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<h3>{{ editingId ? 'Edit subcategory' : 'Add subcategory' }}</h3>
+<form (ngSubmit)="submit()">
+  <div class="form-field">
+    <label>Name</label>
+    <input type="text" [(ngModel)]="form.name" name="name" required />
+  </div>
+  <div class="form-field">
+    <label>Slug</label>
+    <input type="text" [(ngModel)]="form.slug" name="slug" required />
+  </div>
+  <div class="form-field">
+    <label>Category</label>
+    <select [(ngModel)]="form.category" name="category" required>
+      <option value="" disabled>Select category</option>
+      @for (category of categories; track category) {
+        <option [value]="category._id">{{ category.name }}</option>
+      }
+    </select>
+  </div>
+  @if (editingId) {
+    <label style="font-weight: 400">
+      <input type="checkbox" [(ngModel)]="form.isActive" name="isActive" /> Active (visible in
+      store navigation)
+    </label>
+  }
+  <button type="submit" class="btn btn-primary">
+    {{ editingId ? 'Save' : 'Create' }}
+  </button>
+  @if (editingId) {
+    <button type="button" class="btn" (click)="cancelEdit()">Cancel</button>
+  }
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Slug</th>
+      <th>Category</th>
+      <th>Active</th>
+      <th>Deleted</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (subCategory of subCategories; track subCategory) {
+      <tr>
+        <td>{{ subCategory.name }}</td>
+        <td>{{ subCategory.slug }}</td>
+        <td>{{ categoryName(subCategory.category) }}</td>
+        <td>@if (subCategory.isActive) { ✓ }</td>
+        <td>@if (subCategory.isDeleted) { ✓ }</td>
+        <td>
+          <button class="btn btn-sm" (click)="startEdit(subCategory)">Edit</button>
+          <button class="btn btn-sm btn-danger" (click)="deleteSubCategory(subCategory)">Delete</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

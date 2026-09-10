@@ -1,0 +1,47 @@
+<h1>Users</h1>
+
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+
+<div class="toolbar">
+  <a routerLink="/dashboard/users-list/create-admin" class="btn btn-primary">Create admin</a>
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Gender</th>
+      <th>Blocked</th>
+      <th>Addresses</th>
+      <th>Joined</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (user of users; track user) {
+      <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email || '-' }}</td>
+        <td>{{ user.role }}</td>
+        <td>{{ user.gender }}</td>
+        <td>@if (user.isBlocked) { ✓ }</td>
+        <td>{{ user.addresses?.length || 0 }}</td>
+        <td>{{ user.createdAt | date: 'mediumDate' }}</td>
+        <td>
+          @if (user.isBlocked) {
+            <button class="btn btn-sm" (click)="toggleBlock(user)">Unblock</button>
+          } @else {
+            <button class="btn btn-sm btn-danger" (click)="toggleBlock(user)">Block</button>
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,8 @@
+.static-page {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1.25rem;
+  max-width: 720px;
+  line-height: 1.6;
+}

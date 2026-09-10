@@ -70,3 +70,28 @@ exports.setDefaultAddress = async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 };
+
+//fetch the logged-in user's saved addresses (the auth middleware
+//already loads the full user document onto req.user)
+exports.getMyAddresses = async (req, res) => {
+  res.status(200).json({ message: 'My addresses', data: req.user.addresses });
+};
+
+//admin block/unblock toggle (isBlocked is enforced by preventBlocked on orders)
+exports.setUserBlocked = async (req, res) => {
+  try {
+    const { isBlocked } = req.body;
+    const myUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { isBlocked: !!isBlocked },
+      { new: true },
+    );
+    if (!myUser) return res.status(404).json({ error: 'User not found' });
+    res.status(200).json({
+      message: isBlocked ? 'User blocked' : 'User unblocked',
+      data: myUser,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};

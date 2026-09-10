@@ -1,0 +1,60 @@
+<h1>All orders</h1>
+
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<div class="toolbar">
+  <label for="statusFilter" style="margin: 0">Filter by status</label>
+  <select id="statusFilter" [(ngModel)]="statusFilter" style="width: auto">
+    <option value="">All</option>
+    @for (status of statuses; track status) {
+      <option [value]="status">{{ status }}</option>
+    }
+  </select>
+</div>
+
+@if (filteredOrders.length) {
+  @for (order of filteredOrders; track order) {
+    <div class="order">
+      <div class="toolbar">
+        <strong>Order {{ order._id.slice(-6) }}</strong>
+        <span>{{ order.user?.name }} ({{ order.user?.email }})</span>
+        <span>{{ order.createdAt | date: 'medium' }}</span>
+        <strong>{{ order.totalPrice | number: '1.2-2' }} EGP</strong>
+        <select [(ngModel)]="order.status" (change)="onStatusChange(order)">
+          @for (status of statuses; track status) {
+            <option [value]="status">{{ status }}</option>
+          }
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price at order time</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of order.products; track item) {
+            <tr>
+              <td>{{ productName(item.productId) }}</td>
+              <td>{{ item.priceAtOrderTime | number: '1.2-2' }}</td>
+              <td>{{ item.quantity }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <p>
+        <strong>Ship to:</strong> {{ order.address.title }}, {{ order.address.street }},
+        {{ order.address.city }}
+      </p>
+    </div>
+  }
+} @else {
+  <p>No orders found.</p>
+}

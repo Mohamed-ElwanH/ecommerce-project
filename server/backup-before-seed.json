@@ -1,0 +1,130 @@
+{
+ "_backupDate": "2026-09-10T18:20:36.597Z",
+ "users": [
+  {
+   "_id": "6a86ebedfc4e2c63673c85c4",
+   "name": "Karim Fuckass",
+   "email": "karim@test.com",
+   "role": "user",
+   "password": "$2b$12$Kakm1TXdYrlit69qOeWAVuxiiKigSOETStFr/px1Ur3pUPeDWRFS6",
+   "gender": "male",
+   "isBlocked": false,
+   "addresses": [],
+   "createdAt": {},
+   "updatedAt": {},
+   "__v": 0
+  },
+  {
+   "_id": "6a89d7ac4a31cdb8a2670dd2",
+   "name": "Nadia Fuckass",
+   "email": "nadia@test.com",
+   "role": "user",
+   "password": "$2b$12$Nwd9euCUfoxxwpHaBXw7bOtopVCQCZss5fDU3QqTc6ZkQZN8K3wJO",
+   "gender": "female",
+   "isBlocked": false,
+   "addresses": [],
+   "createdAt": {},
+   "updatedAt": {},
+   "__v": 0
+  },
+  {
+   "_id": "6a89d8074a31cdb8a2670dd4",
+   "name": "Karim TheFuckassAdmin",
+   "email": "karim@admin.com",
+   "role": "admin",
+   "password": "$2b$12$1lg//9St6443jvFXQMH.fetJRzDKqulJE/mt53BjYDRshz5Z6zSLG",
+   "gender": "male",
+   "isBlocked": false,
+   "addresses": [],
+   "createdAt": {},
+   "updatedAt": {},
+   "__v": 0
+  }
+ ],
+ "categories": [
+  {
+   "_id": "6a8c262d74f8857c11b48d91",
+   "name": "Men",
+   "slug": "men",
+   "isActive": true,
+   "isDeleted": false,
+   "__v": 0
+  },
+  {
+   "_id": "6a8c265574f8857c11b48d92",
+   "name": "Women",
+   "slug": "women",
+   "isActive": true,
+   "isDeleted": false,
+   "__v": 0
+  }
+ ],
+ "subcategories": [
+  {
+   "_id": "6a8c273874f8857c11b48d95",
+   "name": "T-Shirt",
+   "slug": "men-tshirt",
+   "category": "6a8c262d74f8857c11b48d91",
+   "isActive": true,
+   "isDeleted": false,
+   "__v": 0
+  },
+  {
+   "_id": "6a8c274b74f8857c11b48d96",
+   "name": "Pantalon",
+   "slug": "men-pantalon",
+   "category": "6a8c262d74f8857c11b48d91",
+   "isActive": true,
+   "isDeleted": false,
+   "__v": 0
+  },
+  {
+   "_id": "6a8c275d74f8857c11b48d97",
+   "name": "T-Shirt",
+   "slug": "women-tshirt",
+   "category": "6a8c265574f8857c11b48d92",
+   "isActive": true,
+   "isDeleted": false,
+   "__v": 0
+  },
+  {
+   "_id": "6a8c278174f8857c11b48d99",
+   "name": "Pantalon",
+   "slug": "women-pantalon",
+   "category": "6a8c265574f8857c11b48d92",
+   "isActive": true,
+   "isDeleted": false,
+   "__v": 0
+  }
+ ],
+ "products": [
+  {
+   "_id": "6a8b15dc4831473fd842741e",
+   "name": "Oversized Graphic Tee",
+   "desc": "Relaxed fit tee with printed graphic",
+   "price": 400,
+   "stock": 0,
+   "images": [
+    "1787499996090_Screenshot 2026-08-19 170206.png",
+    "1787499996101_Screenshot 2026-08-17 224018.png",
+    "1787499996113_Screenshot 2026-08-05 211514.png"
+   ],
+   "category": "Women",
+   "subCategory": [
+    "T-Shirt",
+    "Pantalon"
+   ],
+   "slug": "oversized-graphic-tee",
+   "isActive": true,
+   "isDeleted": false,
+   "isTopSale": false,
+   "isNewArrival": false,
+   "createdAt": {},
+   "updatedAt": {},
+   "__v": 0
+  }
+ ],
+ "carts": [],
+ "orders": [],
+ "testimonials": []
+}

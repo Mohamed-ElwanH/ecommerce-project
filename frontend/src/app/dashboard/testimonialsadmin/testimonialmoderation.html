@@ -1,0 +1,42 @@
+<h1>Testimonial moderation</h1>
+
+@if (successMessage) {
+  <p class="alert alert-success">{{ successMessage }}</p>
+}
+@if (errorMessage) {
+  <p class="alert alert-danger">{{ errorMessage }}</p>
+}
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Message</th>
+      <th>Submitted</th>
+      <th>Approved</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (testimonial of testimonials; track testimonial) {
+      <tr>
+        <td>{{ testimonial.name }}</td>
+        <td>{{ testimonial.message }}</td>
+        <td>{{ testimonial.createdAt | date: 'mediumDate' }}</td>
+        <td>@if (testimonial.isApproved) { ✓ } @else { hidden }</td>
+        <td>
+          @if (!testimonial.isApproved) {
+            <button class="btn btn-sm btn-success" (click)="approve(testimonial)">Approve</button>
+          } @else {
+            <button class="btn btn-sm" (click)="hide(testimonial)">Hide</button>
+          }
+          <button class="btn btn-sm btn-danger" (click)="remove(testimonial)">Delete</button>
+        </td>
+      </tr>
+    } @empty {
+      <tr>
+        <td colspan="5">No testimonials yet.</td>
+      </tr>
+    }
+  </tbody>
+</table>

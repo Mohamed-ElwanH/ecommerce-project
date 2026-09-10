@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const path = require("path");
 const connectDB = require("./config/db.config.js");
 const cors = require("cors");
 const app = express();
@@ -11,6 +12,8 @@ const app = express();
 // );
 connectDB();
 app.use(express.json());
+//serve uploaded product images (multer writes them into server/uploads)
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 //routing
 const userRoute = require("./routes/user.route.js");
