@@ -11,14 +11,13 @@
   </p>
 } @else {
   <h3>Delivery address</h3>
-  <div class="addresses">
+  <div class="addresses" [formGroup]="addressForm">
     @for (address of addresses; track address) {
       <label class="address-option">
         <input
           type="radio"
-          name="address"
+          formControlName="addressId"
           [value]="address._id"
-          [(ngModel)]="selectedAddressId"
         />
         <span>
           <strong>{{ address.title }}</strong> - {{ address.street }},

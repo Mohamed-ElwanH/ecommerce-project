@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../../core/services/category-service';
 import { ICategory } from '../../core/models/category.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   selector: 'app-categoryadmin',
   styleUrl: './categoryadmin.css',
   templateUrl: './categoryadmin.html',
@@ -16,7 +16,11 @@ export class Categoryadmin implements OnInit {
   errorMessage = '';
   successMessage = '';
   editingId: string | null = null;
-  form = { name: '', slug: '', isActive: true };
+  form = new FormGroup({
+    name: new FormControl(''),
+    slug: new FormControl(''),
+    isActive: new FormControl(true),
+  });
 
   ngOnInit(): void {
     this.load();
@@ -32,8 +36,9 @@ export class Categoryadmin implements OnInit {
   submit() {
     this.errorMessage = '';
     this.successMessage = '';
+    const v: any = this.form.value;
     if (this.editingId) {
-      this._categoryService.updateCategory(this.editingId, this.form).subscribe({
+      this._categoryService.updateCategory(this.editingId, v).subscribe({
         next: (res) => {
           this.successMessage = res.message;
           this.cancelEdit();
@@ -42,10 +47,10 @@ export class Categoryadmin implements OnInit {
         error: (err) => (this.errorMessage = getApiError(err)),
       });
     } else {
-      this._categoryService.createCategory(this.form).subscribe({
+      this._categoryService.createCategory(v).subscribe({
         next: (res) => {
           this.successMessage = res.message;
-          this.form = { name: '', slug: '', isActive: true };
+          this.form.setValue({ name: '', slug: '', isActive: true });
           this.load();
         },
         error: (err) => (this.errorMessage = getApiError(err)),
@@ -55,16 +60,16 @@ export class Categoryadmin implements OnInit {
 
   startEdit(category: ICategory) {
     this.editingId = category._id;
-    this.form = {
+    this.form.setValue({
       name: category.name,
       slug: category.slug,
       isActive: category.isActive,
-    };
+    });
   }
 
   cancelEdit() {
     this.editingId = null;
-    this.form = { name: '', slug: '', isActive: true };
+    this.form.setValue({ name: '', slug: '', isActive: true });
   }
 
   deleteCategory(category: ICategory) {

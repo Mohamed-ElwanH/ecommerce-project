@@ -1,10 +1,10 @@
 <h1>Our Products</h1>
 
-<div class="toolbar filters">
+<div class="toolbar filters" [formGroup]="filters">
   <label for="category" style="margin: 0">Category</label>
   <select
     id="category"
-    [(ngModel)]="selectedCategory"
+    formControlName="category"
     (change)="onCategoryChange()"
     style="width: auto"
   >
@@ -16,7 +16,7 @@
 
   @if (subCategoriesOfSelectedCategory().length) {
     <label for="subCategory" style="margin: 0">Subcategory</label>
-    <select id="subCategory" [(ngModel)]="selectedSubCategory" style="width: auto">
+    <select id="subCategory" formControlName="subCategory" style="width: auto">
       <option value="">All</option>
       @for (sub of subCategoriesOfSelectedCategory(); track sub) {
         <option [value]="sub._id">{{ sub.name }}</option>

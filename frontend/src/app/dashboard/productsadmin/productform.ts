@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService } from '../../core/services/product-service';
 import { CategoryService } from '../../core/services/category-service';
@@ -10,7 +10,7 @@ import { IProduct } from '../../core/models/product.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [FormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-productform',
   styleUrl: './productform.css',
   templateUrl: './productform.html',
@@ -23,25 +23,25 @@ export class Productform implements OnInit {
     private _router: Router,
     private _activeRoute: ActivatedRoute,
   ) {}
-  @ViewChild('imagesInput') imagesInput!: ElementRef<HTMLInputElement>;
 
   categories: ICategory[] = [];
   subCategories: ISubCategory[] = [];
   editingId: string | null = null;
   errorMessage = '';
+  selectedImages: File[] = [];
 
-  form = {
-    name: '',
-    desc: '',
-    price: 0,
-    stock: 0,
-    category: '',
-    slug: '',
-    isActive: true,
-    isDeleted: false,
-    isTopSale: false,
-    isNewArrival: false,
-  };
+  productForm = new FormGroup({
+    name: new FormControl(''),
+    desc: new FormControl(''),
+    price: new FormControl(0),
+    stock: new FormControl(0),
+    category: new FormControl(''),
+    slug: new FormControl(''),
+    isActive: new FormControl(true),
+    isDeleted: new FormControl(false),
+    isTopSale: new FormControl(false),
+    isNewArrival: new FormControl(false),
+  });
   selectedSubCategories: string[] = [];
 
   ngOnInit(): void {
@@ -69,7 +69,7 @@ export class Productform implements OnInit {
   }
 
   fillFrom(product: IProduct) {
-    this.form = {
+    this.productForm.setValue({
       name: product.name,
       desc: product.desc,
       price: product.price,
@@ -80,8 +80,18 @@ export class Productform implements OnInit {
       isDeleted: product.isDeleted,
       isTopSale: product.isTopSale,
       isNewArrival: product.isNewArrival,
-    };
+    });
     this.selectedSubCategories = product.subCategory || [];
+  }
+
+  onImagesChange(e: any) {
+    this.selectedImages = [];
+    const files = e.target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        this.selectedImages.push(files[i]);
+      }
+    }
   }
 
   toggleSub(subId: string, checked: boolean) {
@@ -95,24 +105,29 @@ export class Productform implements OnInit {
   }
 
   get subCategoriesOfSelectedCategory() {
-    if (!this.form.category) return [];
-    return this.subCategories.filter((s) => s.category === this.form.category);
+    const category = this.productForm.value.category;
+    if (!category) return [];
+    return this.subCategories.filter((s) => s.category === category);
   }
 
   //keep the slug in sync with the name unless the user typed one
   onNameChange() {
     if (!this.editingId) {
-      this.form.slug = this.form.name.toLowerCase().replaceAll(' ', '-');
+      const name = this.productForm.value.name || '';
+      this.productForm.patchValue({
+        slug: name.toLowerCase().replaceAll(' ', '-'),
+      });
     }
   }
 
   submit() {
     this.errorMessage = '';
+    const v: any = this.productForm.value;
     if (this.editingId) {
       //PUT /product/:id is JSON only (no upload middleware on that route)
       this._productService
         .updateProduct(this.editingId, {
-          ...this.form,
+          ...v,
           subCategory: this.selectedSubCategories,
         })
         .subscribe({
@@ -122,20 +137,17 @@ export class Productform implements OnInit {
     } else {
       //POST /product is multipart/form-data with an "images" file array
       const formData = new FormData();
-      formData.append('name', this.form.name);
-      formData.append('desc', this.form.desc);
-      formData.append('price', String(this.form.price));
-      formData.append('stock', String(this.form.stock));
-      formData.append('category', this.form.category);
-      formData.append('slug', this.form.slug);
+      formData.append('name', v.name || '');
+      formData.append('desc', v.desc || '');
+      formData.append('price', String(v.price));
+      formData.append('stock', String(v.stock));
+      formData.append('category', v.category || '');
+      formData.append('slug', v.slug || '');
       for (const subId of this.selectedSubCategories) {
         formData.append('subCategory', subId);
       }
-      const files = this.imagesInput.nativeElement.files;
-      if (files) {
-        for (let i = 0; i < files.length; i++) {
-          formData.append('images', files[i]);
-        }
+      for (const file of this.selectedImages) {
+        formData.append('images', file);
       }
       this._productService.createProduct(formData).subscribe({
         next: () => this._router.navigate(['/dashboard/products']),

@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DecimalPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ReportService } from '../../core/services/report-service';
 import { ISalesReport } from '../../core/models/report.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [DecimalPipe, FormsModule],
+  imports: [DatePipe, DecimalPipe, ReactiveFormsModule],
   selector: 'app-salesreport',
   styleUrl: './salesreport.css',
   templateUrl: './salesreport.html',
@@ -14,9 +14,11 @@ import { getApiError } from '../../core/utils/get-api-error';
 export class Salesreport implements OnInit {
   constructor(private _reportService: ReportService) {}
   report: ISalesReport | null = null;
-  startDate = '';
-  endDate = '';
   errorMessage = '';
+  range = new FormGroup({
+    startDate: new FormControl(''),
+    endDate: new FormControl(''),
+  });
 
   ngOnInit(): void {
     this.load();
@@ -25,7 +27,10 @@ export class Salesreport implements OnInit {
   load() {
     this.errorMessage = '';
     this._reportService
-      .getSalesReport(this.startDate || undefined, this.endDate || undefined)
+      .getSalesReport(
+        this.range.value.startDate || undefined,
+        this.range.value.endDate || undefined,
+      )
       .subscribe({
         next: (res) => (this.report = res.data),
         error: (err) => (this.errorMessage = getApiError(err)),
@@ -36,10 +41,8 @@ export class Salesreport implements OnInit {
     return this.report?.overallStats?.[0];
   }
 
-  monthName(year: number, month: number) {
-    return new Date(year, month - 1, 1).toLocaleString('en-US', {
-      month: 'long',
-      year: 'numeric',
-    });
+  //the aggregation groups by {year, month} - rebuild the month for the date pipe
+  monthDate(month: any) {
+    return new Date(month.year, month.month - 1, 1);
   }
 }

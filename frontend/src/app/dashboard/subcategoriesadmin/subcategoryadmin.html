@@ -8,18 +8,18 @@
 }
 
 <h3>{{ editingId ? 'Edit subcategory' : 'Add subcategory' }}</h3>
-<form (ngSubmit)="submit()">
+<form [formGroup]="form" (ngSubmit)="submit()">
   <div class="form-field">
     <label>Name</label>
-    <input type="text" [(ngModel)]="form.name" name="name" required />
+    <input type="text" formControlName="name" required />
   </div>
   <div class="form-field">
     <label>Slug</label>
-    <input type="text" [(ngModel)]="form.slug" name="slug" required />
+    <input type="text" formControlName="slug" required />
   </div>
   <div class="form-field">
     <label>Category</label>
-    <select [(ngModel)]="form.category" name="category" required>
+    <select formControlName="category" required>
       <option value="" disabled>Select category</option>
       @for (category of categories; track category) {
         <option [value]="category._id">{{ category.name }}</option>
@@ -28,7 +28,7 @@
   </div>
   @if (editingId) {
     <label style="font-weight: 400">
-      <input type="checkbox" [(ngModel)]="form.isActive" name="isActive" /> Active (visible in
+      <input type="checkbox" formControlName="isActive" /> Active (visible in
       store navigation)
     </label>
   }

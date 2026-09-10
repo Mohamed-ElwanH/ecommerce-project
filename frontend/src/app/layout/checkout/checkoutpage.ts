@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CartService } from '../../core/services/cart-service';
 import { UserService } from '../../core/services/user-service';
 import { OrderService } from '../../core/services/order-service';
@@ -10,7 +10,7 @@ import { ICart, ICartItem } from '../../core/models/cart.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule],
+  imports: [RouterLink, DecimalPipe, ReactiveFormsModule],
   selector: 'app-checkoutpage',
   styleUrl: './checkoutpage.css',
   templateUrl: './checkoutpage.html',
@@ -24,7 +24,9 @@ export class Checkoutpage implements OnInit {
   ) {}
   cart: ICart | null = null;
   addresses: IAddress[] = [];
-  selectedAddressId = '';
+  addressForm = new FormGroup({
+    addressId: new FormControl(''),
+  });
   placing = false;
   errorMessage = '';
   successMessage = '';
@@ -39,7 +41,9 @@ export class Checkoutpage implements OnInit {
         this.addresses = res.data;
         const preferred =
           this.addresses.find((a) => a.isDefault) || this.addresses[0];
-        if (preferred) this.selectedAddressId = preferred._id;
+        if (preferred) {
+          this.addressForm.setValue({ addressId: preferred._id });
+        }
       },
       error: (err) => console.log(err),
     });
@@ -61,7 +65,8 @@ export class Checkoutpage implements OnInit {
   placeOrder() {
     this.errorMessage = '';
     this.successMessage = '';
-    if (!this.selectedAddressId) {
+    const addressId = this.addressForm.value.addressId;
+    if (!addressId) {
       this.errorMessage = 'Select a delivery address first';
       return;
     }
@@ -71,7 +76,7 @@ export class Checkoutpage implements OnInit {
       return;
     }
     this.placing = true;
-    this._orderService.createOrder(this.selectedAddressId).subscribe({
+    this._orderService.createOrder(addressId).subscribe({
       next: (res) => {
         this.successMessage = res.message;
         this.placing = false;

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { skip } from 'rxjs';
 import { ProductService } from '../../../core/services/product-service';
 import { IProduct } from '../../../core/models/product.model';
 import { environment } from '../../../../enviroments/env';
@@ -11,7 +9,7 @@ import { Product } from '../product/product';
 import { getApiError } from '../../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule, Product],
+  imports: [RouterLink, DecimalPipe, Product],
   selector: 'app-productdetails',
   styleUrl: './productdetails.css',
   templateUrl: './productdetails.html',
@@ -22,20 +20,24 @@ export class Productdetails implements OnInit {
     private _productService: ProductService,
     private _cartService: CartService,
   ) {}
-  myProduct?: IProduct;
+  myProduct: IProduct | null = null;
   relatedProducts: IProduct[] = [];
   staticURL = environment.staticURL;
   quantity = 1;
   cartMessage = '';
   added = false;
   loadingRelated = false;
+  firstParamEmission = true;
 
   ngOnInit(): void {
-    this.myProduct = this._activeRoute.snapshot.data['myProductResponse']?.data;
+    this.myProduct = this._activeRoute.snapshot.data['myProductResponse'].data;
     this.loadRelated();
-    //navigating to another slug (e.g. a related product) reuses this
-    //component, so refetch instead of relying on the resolver's snapshot
-    this._activeRoute.paramMap.pipe(skip(1)).subscribe((params) => {
+    //route params reuse the component, so refetch on slug change
+    this._activeRoute.paramMap.subscribe((params) => {
+      if (this.firstParamEmission) {
+        this.firstParamEmission = false;
+        return;
+      }
       const slug = params.get('slug');
       if (!slug) return;
       this.quantity = 1;
@@ -43,12 +45,16 @@ export class Productdetails implements OnInit {
       this.cartMessage = '';
       this._productService.getProductBySlug(slug).subscribe({
         next: (res) => {
-          this.myProduct = res.data ?? undefined;
+          this.myProduct = res.data;
           this.loadRelated();
         },
         error: (err) => console.log(err),
       });
     });
+  }
+
+  onQuantityChange(e: any) {
+    this.quantity = Number(e.target.value);
   }
 
   firstImage(product: IProduct) {

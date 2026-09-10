@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SubCategoryService } from '../../core/services/subCategory-service';
 import { CategoryService } from '../../core/services/category-service';
 import { ISubCategory } from '../../core/models/subCategory.model';
@@ -7,7 +7,7 @@ import { ICategory } from '../../core/models/category.model';
 import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [FormsModule],
+  imports: [ReactiveFormsModule],
   selector: 'app-subcategoryadmin',
   styleUrl: './subcategoryadmin.css',
   templateUrl: './subcategoryadmin.html',
@@ -22,7 +22,12 @@ export class Subcategoryadmin implements OnInit {
   errorMessage = '';
   successMessage = '';
   editingId: string | null = null;
-  form = { name: '', slug: '', category: '', isActive: true };
+  form = new FormGroup({
+    name: new FormControl(''),
+    slug: new FormControl(''),
+    category: new FormControl(''),
+    isActive: new FormControl(true),
+  });
 
   ngOnInit(): void {
     this.load();
@@ -47,10 +52,9 @@ export class Subcategoryadmin implements OnInit {
   submit() {
     this.errorMessage = '';
     this.successMessage = '';
+    const v: any = this.form.value;
     if (this.editingId) {
-      this._subCategoryService
-        .updateSubCategory(this.editingId, this.form)
-        .subscribe({
+      this._subCategoryService.updateSubCategory(this.editingId, v).subscribe({
           next: (res) => {
             this.successMessage = res.message;
             this.cancelEdit();
@@ -59,10 +63,15 @@ export class Subcategoryadmin implements OnInit {
           error: (err) => (this.errorMessage = getApiError(err)),
         });
     } else {
-      this._subCategoryService.createSubCategory(this.form).subscribe({
+      this._subCategoryService.createSubCategory(v).subscribe({
         next: (res) => {
           this.successMessage = res.message;
-          this.form = { name: '', slug: '', category: '', isActive: true };
+          this.form.setValue({
+            name: '',
+            slug: '',
+            category: '',
+            isActive: true,
+          });
           this.load();
         },
         error: (err) => (this.errorMessage = getApiError(err)),
@@ -72,17 +81,17 @@ export class Subcategoryadmin implements OnInit {
 
   startEdit(subCategory: ISubCategory) {
     this.editingId = subCategory._id;
-    this.form = {
+    this.form.setValue({
       name: subCategory.name,
       slug: subCategory.slug,
       category: subCategory.category,
       isActive: subCategory.isActive,
-    };
+    });
   }
 
   cancelEdit() {
     this.editingId = null;
-    this.form = { name: '', slug: '', category: '', isActive: true };
+    this.form.setValue({ name: '', slug: '', category: '', isActive: true });
   }
 
   deleteSubCategory(subCategory: ISubCategory) {
