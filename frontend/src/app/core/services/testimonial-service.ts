@@ -22,7 +22,7 @@ export class TestimonialService {
     return this._http.get<ITestimonialsResponse>(this.apiURL);
   }
 
-  //admin moderation (the approve path typo "testimoinal" is the real backend route)
+  //admin moderation (approve path matches the server route spelling)
   getAllTestimonials() {
     return this._http.get<ITestimonialsResponse>(
       this.apiURL + '/all-testimonial',

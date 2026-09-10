@@ -1,21 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../core/services/auth-service';
 import { UserService } from '../../core/services/user-service';
 import { IAddress } from '../../core/models/address.model';
+import { getApiError } from '../../core/utils/get-api-error';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [RouterLink, FormsModule],
+  imports: [RouterLink, FormsModule, TranslatePipe],
   selector: 'app-account',
   styleUrl: './account.css',
   templateUrl: './account.html',
 })
 export class Account implements OnInit {
-  constructor(
-    private _authService: AuthService,
-    private _userService: UserService,
-  ) {}
+  constructor(private _userService: UserService) {}
   userName = '';
   userEmail = '';
   userRole = '';
@@ -38,30 +36,15 @@ export class Account implements OnInit {
   editForm: Partial<IAddress> = {};
 
   ngOnInit(): void {
-    const token = this._authService.returnToken();
-    if (!token || !this._authService.returnUserId()) return;
-    this._authService.returnUserData().subscribe((name) => {
-      this.userName = name || '';
+    this._userService.getMe().subscribe({
+      next: (res) => {
+        this.userName = res.data.name;
+        this.userEmail = res.data.email || '';
+        this.userRole = res.data.role;
+        this.addresses = res.data.addresses || [];
+      },
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
-    this.userEmail = this.readEmailFromToken(token);
-    this.userRole = this._authService.checkIfLoginWithRole();
-    this.loadAddresses();
-  }
-
-  loadAddresses() {
-    this._userService.getMyAddresses().subscribe({
-      next: (res) => (this.addresses = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
-    });
-  }
-
-  private readEmailFromToken(token: string) {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.email || '';
-    } catch {
-      return '';
-    }
   }
 
   addAddress() {
@@ -83,7 +66,7 @@ export class Account implements OnInit {
           isDefault: false,
         };
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -109,7 +92,7 @@ export class Account implements OnInit {
         this.successMessage = res.message;
         this.cancelEdit();
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -121,7 +104,7 @@ export class Account implements OnInit {
         this.addresses = res.data;
         this.successMessage = res.message;
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -132,7 +115,7 @@ export class Account implements OnInit {
         this.addresses = res.data;
         this.successMessage = res.message;
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

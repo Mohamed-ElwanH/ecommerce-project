@@ -71,6 +71,10 @@ exports.setDefaultAddress = async (req, res) => {
   }
 };
 
+exports.getMe = async (req, res) => {
+  res.status(200).json({ message: 'Current user', data: req.user });
+};
+
 //fetch the logged-in user's saved addresses (the auth middleware
 //already loads the full user document onto req.user)
 exports.getMyAddresses = async (req, res) => {

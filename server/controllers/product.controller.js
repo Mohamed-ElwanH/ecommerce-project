@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Product = require("../models/product.model");
 const Cart = require("../models/cart.model");
 exports.createProduct = async (req, res) => {
@@ -61,6 +62,18 @@ exports.getAllProducts = async (req, res) => {
   try {
     const allProducts = await Product.find();
     res.status(200).json({ message: "Products list:", data: allProducts });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};
+exports.getProductById = async (req, res, next) => {
+  const { id } = req.params;
+  //non-ObjectId params belong to the slug route
+  if (!mongoose.Types.ObjectId.isValid(id)) return next();
+  try {
+    const product = await Product.findById(id);
+    if (!product) return res.status(404).json({ error: "Product not found" });
+    res.status(200).json({ message: "Get product by id", data: product });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

@@ -8,9 +8,11 @@ import { environment } from '../../../../enviroments/env';
 import { CartService } from '../../../core/services/cart-service';
 import { DecimalPipe } from '@angular/common';
 import { Product } from '../product/product';
+import { TranslatePipe } from '../../../core/pipes/translate.pipe';
+import { getApiError } from '../../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule, Product],
+  imports: [RouterLink, DecimalPipe, FormsModule, Product, TranslatePipe],
   selector: 'app-productdetails',
   styleUrl: './productdetails.css',
   templateUrl: './productdetails.html',
@@ -56,8 +58,7 @@ export class Productdetails implements OnInit {
       : '';
   }
 
-  //the backend has no related-products endpoint, so pick products
-  //of the same category client-side (excluding the shown one)
+  //related: same category, excluding the shown product
   private loadRelated() {
     const current = this.myProduct;
     if (!current) return;
@@ -84,9 +85,7 @@ export class Productdetails implements OnInit {
     this.added = false;
     this._cartService.addItem(this.myProduct, this.quantity).subscribe({
       next: () => (this.added = true),
-      error: (err) =>
-        (this.cartMessage =
-          typeof err.error === 'string' ? err.error : err.error?.error),
+      error: (err) => (this.cartMessage = getApiError(err)),
     });
   }
 }

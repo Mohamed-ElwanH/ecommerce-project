@@ -7,9 +7,11 @@ import { UserService } from '../../core/services/user-service';
 import { OrderService } from '../../core/services/order-service';
 import { IAddress } from '../../core/models/address.model';
 import { ICart, ICartItem } from '../../core/models/cart.model';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule],
+  imports: [RouterLink, DecimalPipe, FormsModule, TranslatePipe],
   selector: 'app-checkoutpage',
   styleUrl: './checkoutpage.css',
   templateUrl: './checkoutpage.html',
@@ -31,7 +33,7 @@ export class Checkoutpage implements OnInit {
   ngOnInit(): void {
     this._cartService.getCart().subscribe({
       next: (res) => (this.cart = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
     this._userService.getMyAddresses().subscribe({
       next: (res) => {
@@ -79,8 +81,7 @@ export class Checkoutpage implements OnInit {
       },
       error: (err) => {
         this.placing = false;
-        this.errorMessage =
-          typeof err.error === 'string' ? err.error : err.error?.error;
+        this.errorMessage = getApiError(err);
       },
     });
   }

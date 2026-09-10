@@ -1,15 +1,15 @@
-<h1>My account</h1>
+<h1>{{ 'account.title' | translate }}</h1>
 
 <div class="profile">
-  <p><strong>Name:</strong> {{ userName }}</p>
+  <p><strong>{{ 'account.name' | translate }}:</strong> {{ userName }}</p>
   @if (userEmail) {
-    <p><strong>Email:</strong> {{ userEmail }}</p>
+    <p><strong>{{ 'account.email' | translate }}:</strong> {{ userEmail }}</p>
   }
-  <p><strong>Role:</strong> {{ userRole }}</p>
-  <a routerLink="/my-orders">My orders</a>
+  <p><strong>{{ 'account.role' | translate }}:</strong> {{ userRole }}</p>
+  <a routerLink="/my-orders">{{ 'nav.orders' | translate }}</a>
 </div>
 
-<h2>My addresses</h2>
+<h2>{{ 'account.addresses' | translate }}</h2>
 @if (successMessage) {
   <p class="alert alert-success">{{ successMessage }}</p>
 }
@@ -21,10 +21,10 @@
   <table>
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Address</th>
-        <th>Default</th>
-        <th>Actions</th>
+        <th>{{ 'account.fieldTitle' | translate }}</th>
+        <th>{{ 'account.street' | translate }}</th>
+        <th>{{ 'account.default' | translate }}</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -41,8 +41,8 @@
                 <input type="text" [(ngModel)]="editForm.floor" placeholder="Floor" />
                 <input type="text" [(ngModel)]="editForm.apartment" placeholder="Apartment" />
                 <input type="text" [(ngModel)]="editForm.notes" placeholder="Notes" />
-                <button class="btn btn-sm btn-success" (click)="saveEdit()">Save</button>
-                <button class="btn btn-sm" (click)="cancelEdit()">Cancel</button>
+                <button class="btn btn-sm btn-success" (click)="saveEdit()">{{ 'account.save' | translate }}</button>
+                <button class="btn btn-sm" (click)="cancelEdit()">{{ 'account.cancel' | translate }}</button>
               </div>
             </td>
           } @else {
@@ -55,9 +55,9 @@
             </td>
             <td>@if (address.isDefault) { ✓ }</td>
             <td>
-              <button class="btn btn-sm" (click)="setDefault(address)">Set default</button>
-              <button class="btn btn-sm" (click)="startEdit(address)">Edit</button>
-              <button class="btn btn-sm btn-danger" (click)="deleteAddress(address)">Delete</button>
+              <button class="btn btn-sm" (click)="setDefault(address)">{{ 'account.setDefault' | translate }}</button>
+              <button class="btn btn-sm" (click)="startEdit(address)">{{ 'account.edit' | translate }}</button>
+              <button class="btn btn-sm btn-danger" (click)="deleteAddress(address)">{{ 'account.delete' | translate }}</button>
             </td>
           }
         </tr>
@@ -65,48 +65,48 @@
     </tbody>
   </table>
 } @else {
-  <p>No addresses on record yet - add one below.</p>
+  <p>{{ 'account.none' | translate }}</p>
 }
 
-<h3>Add a new address</h3>
+<h3>{{ 'account.add' | translate }}</h3>
 <form (ngSubmit)="addAddress()">
   <div class="edit-grid">
     <div class="form-field">
-      <label>Title *</label>
+      <label>{{ 'account.fieldTitle' | translate }} *</label>
       <input type="text" [(ngModel)]="addForm.title" name="title" required />
     </div>
     <div class="form-field">
-      <label>Street *</label>
+      <label>{{ 'account.street' | translate }} *</label>
       <input type="text" [(ngModel)]="addForm.street" name="street" required />
     </div>
     <div class="form-field">
-      <label>City *</label>
+      <label>{{ 'account.city' | translate }} *</label>
       <input type="text" [(ngModel)]="addForm.city" name="city" required />
     </div>
     <div class="form-field">
-      <label>Area</label>
+      <label>{{ 'account.area' | translate }}</label>
       <input type="text" [(ngModel)]="addForm.area" name="area" />
     </div>
     <div class="form-field">
-      <label>Building</label>
+      <label>{{ 'account.building' | translate }}</label>
       <input type="text" [(ngModel)]="addForm.building" name="building" />
     </div>
     <div class="form-field">
-      <label>Floor</label>
+      <label>{{ 'account.floor' | translate }}</label>
       <input type="text" [(ngModel)]="addForm.floor" name="floor" />
     </div>
     <div class="form-field">
-      <label>Apartment</label>
+      <label>{{ 'account.apartment' | translate }}</label>
       <input type="text" [(ngModel)]="addForm.apartment" name="apartment" />
     </div>
     <div class="form-field">
-      <label>Notes</label>
+      <label>{{ 'account.notes' | translate }}</label>
       <input type="text" [(ngModel)]="addForm.notes" name="notes" />
     </div>
   </div>
   <label style="font-weight: 400">
     <input type="checkbox" [(ngModel)]="addForm.isDefault" name="isDefault" />
-    Set as default address
+    {{ 'account.isDefault' | translate }}
   </label>
-  <button type="submit" class="btn btn-primary">Add address</button>
+  <button type="submit" class="btn btn-primary">{{ 'account.addAddress' | translate }}</button>
 </form>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { TestimonialService } from '../../core/services/testimonial-service';
 import { ITestimonial } from '../../core/models/testimonial.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [DatePipe],
@@ -22,7 +23,7 @@ export class Testimonialmoderation implements OnInit {
   load() {
     this._testimonialService.getAllTestimonials().subscribe({
       next: (res) => (this.testimonials = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -47,7 +48,7 @@ export class Testimonialmoderation implements OnInit {
         this.successMessage = res.message;
         this.load();
       },
-      error: (err: any) => (this.errorMessage = err.error?.error),
+      error: (err: any) => (this.errorMessage = getApiError(err)),
     });
   }
 }

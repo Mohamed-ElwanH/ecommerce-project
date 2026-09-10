@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { UserService } from '../../core/services/user-service';
 import { IUser } from '../../core/models/user.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [DatePipe, RouterLink],
@@ -19,12 +20,11 @@ export class Userlist implements OnInit {
   ngOnInit(): void {
     this._userService.getAllUsers().subscribe({
       next: (res) => (this.users = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
-  //ban/unban a user - a blocked user is refused by the backend
-  //when trying to place an order
+  //ban/unban - blocked users cannot place orders
   toggleBlock(user: IUser) {
     this.errorMessage = '';
     this.successMessage = '';
@@ -43,7 +43,7 @@ export class Userlist implements OnInit {
         this.successMessage = res.message;
         user.isBlocked = res.data.isBlocked;
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

@@ -32,6 +32,10 @@ export class UserService {
     return this._http.post<IUserResponse>(this.apiURL + '/admin', data);
   }
 
+  getMe() {
+    return this._http.get<IUserResponse>(this.apiURL + '/me');
+  }
+
   //saved addresses of the logged-in user (GET /user/me/addresses)
   getMyAddresses() {
     return this._http.get<IAddressesResponse>(

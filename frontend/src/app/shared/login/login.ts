@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth-service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ILoginData } from '../../core/models/auth.model';
 import { CartService } from '../../core/services/cart-service';
+import { getApiError } from '../../core/utils/get-api-error';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',
@@ -14,6 +17,7 @@ export class Login {
   constructor(
     private _authService: AuthService,
     private _cartService: CartService,
+    private _router: Router,
   ) {}
 
   errorMessage = '';
@@ -25,17 +29,22 @@ export class Login {
   login() {
     this.errorMessage = '';
     this._authService.login(this.loginForm.value as ILoginData).subscribe({
-      next: (res) => {
-        //if something was collected in the guest cart, push it to the server now
+      next: () => {
+        //wait for the guest cart to reach the server before moving on,
+        //so the cart page never shows a pre-merge snapshot
         this._cartService.mergeGuestCart().subscribe({
-          complete: () => console.log(res.message),
+          next: () => this.afterLogin(),
+          error: () => this.afterLogin(),
         });
       },
-      error: (err) => {
-        //the backend answers 404 with a plain string and 403/500 with {error}
-        this.errorMessage =
-          typeof err.error === 'string' ? err.error : err.error?.error;
-      },
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
+  }
+  private afterLogin() {
+    if (this._authService.checkIfLoginWithRole() === 'admin') {
+      this._router.navigate(['/dashboard']);
+    } else {
+      this._router.navigate(['/']);
+    }
   }
 }

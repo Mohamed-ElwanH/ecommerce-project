@@ -10,6 +10,21 @@ body {
   background: #f6f7f9;
 }
 
+[dir='rtl'] th,
+[dir='rtl'] td {
+  text-align: right;
+}
+
+.btn-lang {
+  background: transparent;
+  color: #f9fafb;
+  border: 1px solid #6b7280;
+}
+[dir='rtl'] .btn-lang {
+  color: #1f2937;
+  border-color: #9ca3af;
+}
+
 a {
   color: #0d6efd;
   text-decoration: none;

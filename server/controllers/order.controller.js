@@ -19,6 +19,13 @@ exports.createOrder = async (req, res) => {
       session.endSession();
       return res.status(400).json({ message: "Cart is empty" });
     }
+    if (cart.items.some((item) => item.isPriceChanged)) {
+      await session.abortTransaction();
+      session.endSession();
+      return res
+        .status(409)
+        .json({ error: "Confirm the price-changed items in your cart first" });
+    }
     const { addressId } = req.body;
     const saved = req.user.addresses.id(addressId);
     if (!saved) {
@@ -110,7 +117,9 @@ exports.updateOrderStatus = async (req, res) => {
 };
 exports.getAllOrdersHistory = async (req, res) => {
   try {
-    const orders = await Order.find().populate("user", "-password");
+    const orders = await Order.find()
+      .populate("user", "-password")
+      .populate("products.productId", "name slug");
     res.status(200).json({ message: "All orders", data: orders });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -119,10 +128,9 @@ exports.getAllOrdersHistory = async (req, res) => {
 exports.getUserOrdersHistory = async (req, res) => {
   try {
     const userId = req.user._id;
-    const orders = await Order.find({ user: userId }).populate(
-      "user",
-      "-password",
-    );
+    const orders = await Order.find({ user: userId })
+      .populate("user", "-password")
+      .populate("products.productId", "name slug");
     res.status(200).json({ message: "All user orders", data: orders });
   } catch (e) {
     res.status(500).json({ error: e.message });

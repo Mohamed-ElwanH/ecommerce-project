@@ -1,9 +1,9 @@
 <footer>
   <span>
-    © 2025 Mystore -
-    <a routerLink="/about">About</a> -
-    <a routerLink="/policies">Policies</a> -
-    <a routerLink="/shipping-costs">Shipping costs</a>
+    {{ 'footer.rights' | translate }} -
+    <a routerLink="/about">{{ 'footer.about' | translate }}</a> -
+    <a routerLink="/policies">{{ 'footer.policies' | translate }}</a> -
+    <a routerLink="/shipping-costs">{{ 'footer.shipping' | translate }}</a>
   </span>
-  <span>Built with Angular</span>
+  <span>{{ 'footer.builtWith' | translate }}</span>
 </footer>

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../core/services/category-service';
 import { ICategory } from '../../core/models/category.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [FormsModule],
@@ -24,7 +25,7 @@ export class Categoryadmin implements OnInit {
   load() {
     this._categoryService.getAllCategories().subscribe({
       next: (res) => (this.categories = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -38,7 +39,7 @@ export class Categoryadmin implements OnInit {
           this.cancelEdit();
           this.load();
         },
-        error: (err) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
     } else {
       this._categoryService.createCategory(this.form).subscribe({
@@ -47,7 +48,7 @@ export class Categoryadmin implements OnInit {
           this.form = { name: '', slug: '', isActive: true };
           this.load();
         },
-        error: (err) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
     }
   }
@@ -74,7 +75,7 @@ export class Categoryadmin implements OnInit {
         this.successMessage = res.message;
         this.load();
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

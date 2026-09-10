@@ -7,6 +7,7 @@ import { SubCategoryService } from '../../core/services/subCategory-service';
 import { ICategory } from '../../core/models/category.model';
 import { ISubCategory } from '../../core/models/subCategory.model';
 import { IProduct } from '../../core/models/product.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [FormsModule, RouterLink],
@@ -53,18 +54,16 @@ export class Productform implements OnInit {
       error: (err) => console.log(err),
     });
 
-    //edit mode: /dashboard/products/:id/edit (the backend has no GET by id,
-    //so find the product inside the full list)
+    //edit mode: /dashboard/products/:id/edit
     const id = this._activeRoute.snapshot.paramMap.get('id');
     if (id) {
       this.editingId = id;
-      this._productService.getAllProducts().subscribe({
+      this._productService.getProductById(id).subscribe({
         next: (res) => {
-          const product = res.data.find((p) => p._id === id);
-          if (product) this.fillFrom(product);
+          if (res.data) this.fillFrom(res.data);
           else this.errorMessage = 'Product not found';
         },
-        error: (err) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
     }
   }
@@ -118,7 +117,7 @@ export class Productform implements OnInit {
         })
         .subscribe({
           next: () => this._router.navigate(['/dashboard/products']),
-          error: (err) => (this.errorMessage = err.error?.error),
+          error: (err) => (this.errorMessage = getApiError(err)),
         });
     } else {
       //POST /product is multipart/form-data with an "images" file array
@@ -140,7 +139,7 @@ export class Productform implements OnInit {
       }
       this._productService.createProduct(formData).subscribe({
         next: () => this._router.navigate(['/dashboard/products']),
-        error: (err) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
     }
   }

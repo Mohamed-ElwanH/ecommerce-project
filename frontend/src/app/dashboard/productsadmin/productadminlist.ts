@@ -6,6 +6,7 @@ import { CategoryService } from '../../core/services/category-service';
 import { IProduct } from '../../core/models/product.model';
 import { ICategory } from '../../core/models/category.model';
 import { environment } from '../../../enviroments/env';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [RouterLink, DecimalPipe],
@@ -35,7 +36,7 @@ export class Productadminlist implements OnInit {
   load() {
     this._productService.getAllProducts().subscribe({
       next: (res) => (this.products = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -59,7 +60,7 @@ export class Productadminlist implements OnInit {
         this.successMessage = res.message;
         this.load();
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }
