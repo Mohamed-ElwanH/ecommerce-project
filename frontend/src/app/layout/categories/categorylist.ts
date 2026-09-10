@@ -4,9 +4,11 @@ import { CategoryService } from '../../core/services/category-service';
 import { SubCategoryService } from '../../core/services/subCategory-service';
 import { ICategory } from '../../core/models/category.model';
 import { ISubCategory } from '../../core/models/subCategory.model';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
   selector: 'app-categorylist',
   styleUrl: './categorylist.css',
   templateUrl: './categorylist.html',
@@ -26,7 +28,7 @@ export class Categorylist implements OnInit {
         (this.categories = res.data.filter(
           (c) => c.isActive && !c.isDeleted,
         )),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
     this._subCategoryService.getAllSubCategories().subscribe({
       next: (res) =>

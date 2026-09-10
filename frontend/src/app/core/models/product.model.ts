@@ -5,8 +5,8 @@ export interface IProduct {
   price: number;
   stock: number;
   images: string[];
-  category: string; // ObjectId, not populated by the backend
-  subCategory: string[]; // ObjectIds, not populated by the backend
+  category: string; // ObjectId
+  subCategory: string[]; // ObjectIds
   slug: string;
   isActive: boolean;
   isDeleted: boolean;

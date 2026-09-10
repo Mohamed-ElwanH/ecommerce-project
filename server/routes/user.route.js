@@ -10,10 +10,12 @@ const {
   setDefaultAddress,
   getMyAddresses,
   setUserBlocked,
+  getMe,
 } = require('../controllers/user.controller');
 const router = express.Router();
 
 router.get('/', authenticate, authorize('admin'), getAllUsers);
+router.get('/me', authenticate, getMe);
 router.get('/me/addresses', authenticate, getMyAddresses);
 router.post('/', createUser('user'));
 router.post('/admin', authenticate, authorize('admin'), createUser('admin'));

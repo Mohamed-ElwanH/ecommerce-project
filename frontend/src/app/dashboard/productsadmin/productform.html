@@ -59,10 +59,7 @@
       <input type="file" id="images" #imagesInput multiple accept=".png,.jpg,.jpeg" />
     </div>
   } @else {
-    <p class="alert alert-warning">
-      Note: the backend update route does not accept image uploads, so existing
-      images cannot be changed from here.
-    </p>
+    <p class="alert alert-warning">Images can't be changed here yet.</p>
   }
 
   @if (editingId) {

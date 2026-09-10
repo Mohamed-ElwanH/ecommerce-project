@@ -6,9 +6,11 @@ import { CartService } from '../../core/services/cart-service';
 import { AuthService } from '../../core/services/auth-service';
 import { ICartItem, IGuestCartItem } from '../../core/models/cart.model';
 import { environment } from '../../../enviroments/env';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [RouterLink, DecimalPipe, FormsModule],
+  imports: [RouterLink, DecimalPipe, FormsModule, TranslatePipe],
   selector: 'app-cartpage',
   styleUrl: './cartpage.css',
   templateUrl: './cartpage.html',
@@ -37,7 +39,7 @@ export class Cartpage implements OnInit {
   loadCart() {
     this._cartService.getCart().subscribe({
       next: (res) => (this.items = res.data.items || []),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -70,7 +72,7 @@ export class Cartpage implements OnInit {
       .updateItemQuantity(item.product._id, item.quantity)
       .subscribe({
         next: () => this.loadCart(),
-        error: (err: any) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
   }
 
@@ -83,7 +85,7 @@ export class Cartpage implements OnInit {
   remove(item: ICartItem) {
     this._cartService.removeItem(item.product._id).subscribe({
       next: () => this.loadCart(),
-      error: (err: any) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -97,7 +99,7 @@ export class Cartpage implements OnInit {
   confirmPrice(item: ICartItem) {
     this._cartService.confirmPriceChange(item.product._id).subscribe({
       next: () => this.loadCart(),
-      error: (err: any) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

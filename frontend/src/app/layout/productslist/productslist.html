@@ -1,23 +1,23 @@
-<h1>Our Products</h1>
+<h1>{{ 'products.title' | translate }}</h1>
 
 <div class="toolbar filters">
-  <label for="category" style="margin: 0">Category</label>
+  <label for="category" style="margin: 0">{{ 'products.category' | translate }}</label>
   <select
     id="category"
     [(ngModel)]="selectedCategory"
     (change)="onCategoryChange()"
     style="width: auto"
   >
-    <option value="">All</option>
+    <option value="">{{ 'products.all' | translate }}</option>
     @for (category of categories; track category) {
       <option [value]="category._id">{{ category.name }}</option>
     }
   </select>
 
   @if (subCategoriesOfSelectedCategory().length) {
-    <label for="subCategory" style="margin: 0">Subcategory</label>
+    <label for="subCategory" style="margin: 0">{{ 'products.subcategory' | translate }}</label>
     <select id="subCategory" [(ngModel)]="selectedSubCategory" style="width: auto">
-      <option value="">All</option>
+      <option value="">{{ 'products.all' | translate }}</option>
       @for (sub of subCategoriesOfSelectedCategory(); track sub) {
         <option [value]="sub._id">{{ sub.name }}</option>
       }
@@ -29,6 +29,6 @@
   @for (product of filteredProducts; track product) {
     <app-product [myProduct]="product"></app-product>
   } @empty {
-    <p>No products found.</p>
+    <p>{{ 'products.none' | translate }}</p>
   }
 </div>

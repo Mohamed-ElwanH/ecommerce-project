@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user-service';
 import { ICreateUserData } from '../../../core/models/user.model';
+import { getApiError } from '../../../core/utils/get-api-error';
 
 @Component({
   imports: [FormsModule],
@@ -28,7 +29,7 @@ export class Createadmin {
         this.successMessage = res.message;
         this.form = { name: '', password: '', gender: 'male' };
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

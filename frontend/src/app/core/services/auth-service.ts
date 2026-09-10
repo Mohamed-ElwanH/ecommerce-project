@@ -58,11 +58,6 @@ export class AuthService {
         if (decode) {
           this.userData.next(decode.name);
           this.storeToken(data.token);
-          if (decode.role === 'user') {
-            this._router.navigate(['/']); //going to the website's route
-          } else {
-            this._router.navigate(['/dashboard']); //or (['/dashboard', 'home']) as in each element has aroute
-          }
         }
       }),
     );

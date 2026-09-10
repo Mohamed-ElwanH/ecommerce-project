@@ -3,6 +3,7 @@ import { DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReportService } from '../../core/services/report-service';
 import { ISalesReport } from '../../core/models/report.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [DecimalPipe, FormsModule],
@@ -27,7 +28,7 @@ export class Salesreport implements OnInit {
       .getSalesReport(this.startDate || undefined, this.endDate || undefined)
       .subscribe({
         next: (res) => (this.report = res.data),
-        error: (err) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
   }
 

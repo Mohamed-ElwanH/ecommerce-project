@@ -1,12 +1,12 @@
 <section>
-  <h1>Welcome to Mystore</h1>
-  <p>Browse our catalog, add products to your cart and place an order.</p>
-  <a routerLink="/products-list" class="btn btn-primary">Shop now</a>
+  <h1>{{ 'home.title' | translate }}</h1>
+  <p>{{ 'home.subtitle' | translate }}</p>
+  <a routerLink="/products-list" class="btn btn-primary">{{ 'home.shopNow' | translate }}</a>
 </section>
 
 @if (topSales.length) {
   <section>
-    <h2>Top sales</h2>
+    <h2>{{ 'home.topSales' | translate }}</h2>
     <div class="grid">
       @for (product of topSales; track product) {
         <app-product [myProduct]="product"></app-product>
@@ -17,7 +17,7 @@
 
 @if (newArrivals.length) {
   <section>
-    <h2>New arrivals</h2>
+    <h2>{{ 'home.newArrivals' | translate }}</h2>
     <div class="grid">
       @for (product of newArrivals; track product) {
         <app-product [myProduct]="product"></app-product>
@@ -28,7 +28,7 @@
 
 @if (testimonials.length) {
   <section>
-    <h2>What customers say</h2>
+    <h2>{{ 'home.reviews' | translate }}</h2>
     <div class="grid">
       @for (testimonial of testimonials; track testimonial) {
         <div class="card">

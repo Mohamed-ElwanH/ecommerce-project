@@ -8,9 +8,10 @@ import { SubCategoryService } from '../../core/services/subCategory-service';
 import { ICategory } from '../../core/models/category.model';
 import { ISubCategory } from '../../core/models/subCategory.model';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [Product, FormsModule],
+  imports: [Product, FormsModule, TranslatePipe],
   selector: 'app-productslist',
   styleUrl: './productslist.css',
   templateUrl: './productslist.html',

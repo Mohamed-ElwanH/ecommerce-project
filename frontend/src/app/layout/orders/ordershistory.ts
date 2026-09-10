@@ -1,44 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { OrderService } from '../../core/services/order-service';
-import { ProductService } from '../../core/services/product-service';
-import { IOrder } from '../../core/models/order.model';
+import { IOrder, orderProductName } from '../../core/models/order.model';
+import { getApiError } from '../../core/utils/get-api-error';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [DatePipe, DecimalPipe],
+  imports: [DatePipe, DecimalPipe, RouterLink, TranslatePipe],
   selector: 'app-ordershistory',
   styleUrl: './ordershistory.css',
   templateUrl: './ordershistory.html',
 })
 export class Ordershistory implements OnInit {
-  constructor(
-    private _orderService: OrderService,
-    private _productService: ProductService,
-  ) {}
+  constructor(private _orderService: OrderService) {}
   orders: IOrder[] = [];
-  productNames: Record<string, string> = {};
   errorMessage = '';
 
   ngOnInit(): void {
     this._orderService.getUserOrdersHistory().subscribe({
       next: (res) => (this.orders = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
-    });
-    //order products are not populated by the backend, so map ids to names
-    //from the public products list
-    this._productService.getAllProducts().subscribe({
-      next: (res) => {
-        for (const product of res.data) {
-          this.productNames[product._id] = product.name;
-        }
-      },
-      error: (err) => console.log(err),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
-  productName(productId: string) {
-    return this.productNames[productId] || productId;
-  }
+  productName = orderProductName;
 
   canCancel(order: IOrder) {
     return order.status === 'pending' || order.status === 'in progress';
@@ -49,7 +35,7 @@ export class Ordershistory implements OnInit {
     if (!confirm('Cancel this order?')) return;
     this._orderService.cancelOrder(order._id).subscribe({
       next: (res) => (order.status = res.data.status),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

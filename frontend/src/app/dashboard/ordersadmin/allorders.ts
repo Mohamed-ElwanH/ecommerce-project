@@ -2,8 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrderService } from '../../core/services/order-service';
-import { ProductService } from '../../core/services/product-service';
-import { IOrder, TOrderStatus, ORDER_STATUSES } from '../../core/models/order.model';
+import {
+  IOrder,
+  TOrderStatus,
+  ORDER_STATUSES,
+  orderProductName,
+} from '../../core/models/order.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [DatePipe, DecimalPipe, FormsModule],
@@ -12,43 +17,25 @@ import { IOrder, TOrderStatus, ORDER_STATUSES } from '../../core/models/order.mo
   templateUrl: './allorders.html',
 })
 export class Allorders implements OnInit {
-  constructor(
-    private _orderService: OrderService,
-    private _productService: ProductService,
-  ) {}
+  constructor(private _orderService: OrderService) {}
   orders: IOrder[] = [];
-  productNames: Record<string, string> = {};
   statuses: TOrderStatus[] = ORDER_STATUSES;
   statusFilter = '';
   errorMessage = '';
   successMessage = '';
 
   ngOnInit(): void {
-    this.load();
-    this._productService.getAllProducts().subscribe({
-      next: (res) => {
-        for (const product of res.data) {
-          this.productNames[product._id] = product.name;
-        }
-      },
-      error: (err) => console.log(err),
+    this._orderService.getAllOrdersHistory().subscribe({
+      next: (res) => (this.orders = res.data),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
-  load() {
-    this._orderService.getAllOrdersHistory().subscribe({
-      next: (res) => (this.orders = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
-    });
-  }
+  productName = orderProductName;
 
   get filteredOrders(): IOrder[] {
     if (!this.statusFilter) return this.orders;
     return this.orders.filter((o) => o.status === this.statusFilter);
-  }
-
-  productName(productId: string) {
-    return this.productNames[productId] || productId;
   }
 
   onStatusChange(order: IOrder) {
@@ -59,8 +46,8 @@ export class Allorders implements OnInit {
         this.successMessage = res.message;
       },
       error: (err) => {
-        this.errorMessage = err.error?.error;
-        this.load(); //restore the real status
+        this.errorMessage = getApiError(err);
+        this.ngOnInit(); //restore the real status
       },
     });
   }

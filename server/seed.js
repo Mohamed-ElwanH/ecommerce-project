@@ -310,16 +310,16 @@ const carts = [
     user: U.mohamed,
     items: [
       // price matches the current product price - normal item
-      { _id: "650e000000000000000000c1a", product: pid("03"), quantity: 1, price: 31000, isPriceChanged: false },
+      { product: pid("03"), quantity: 1, price: 31000, isPriceChanged: false },
       // price 3500 vs current 3800 - shows up in the "price changed" section
-      { _id: "650e000000000000000000c1b", product: pid("05"), quantity: 2, price: 3500, isPriceChanged: true },
+      { product: pid("05"), quantity: 2, price: 3500, isPriceChanged: true },
     ],
   },
   {
     _id: "650e000000000000000000c2",
     user: U.sara,
     items: [
-      { _id: "650e000000000000000000c2a", product: pid("25"), quantity: 3, price: 350, isPriceChanged: false },
+      { product: pid("25"), quantity: 3, price: 350, isPriceChanged: false },
     ],
   },
 ];

@@ -1,4 +1,4 @@
-<h1>My orders</h1>
+<h1>{{ 'orders.title' | translate }}</h1>
 
 @if (errorMessage) {
   <p class="alert alert-danger">{{ errorMessage }}</p>
@@ -8,20 +8,20 @@
   @for (order of orders; track order) {
     <div class="order">
       <div class="toolbar">
-        <strong>Order {{ order._id.slice(-6) }}</strong>
+        <strong>{{ 'orders.order' | translate }} {{ order._id.slice(-6) }}</strong>
         <span class="badge">{{ order.status }}</span>
         <span>{{ order.createdAt | date: 'medium' }}</span>
         <strong>{{ order.totalPrice | number: '1.2-2' }} EGP</strong>
         @if (canCancel(order)) {
-          <button class="btn btn-sm btn-danger" (click)="cancelOrder(order)">Cancel order</button>
+          <button class="btn btn-sm btn-danger" (click)="cancelOrder(order)">{{ 'orders.cancel' | translate }}</button>
         }
       </div>
       <table>
         <thead>
           <tr>
-            <th>Product</th>
-            <th>Price at order time</th>
-            <th>Quantity</th>
+            <th>{{ 'cart.product' | translate }}</th>
+            <th>{{ 'cart.price' | translate }}</th>
+            <th>{{ 'cart.quantity' | translate }}</th>
           </tr>
         </thead>
         <tbody>
@@ -35,11 +35,11 @@
         </tbody>
       </table>
       <p>
-        <strong>Deliver to:</strong> {{ order.address.title }}, {{ order.address.street }},
-        {{ order.address.city }}
+        <strong>{{ 'orders.deliverTo' | translate }}</strong> {{ order.address.title }},
+        {{ order.address.street }}, {{ order.address.city }}
       </p>
     </div>
   }
 } @else {
-  <p>You have no orders yet - <a routerLink="/products-list">start shopping</a></p>
+  <p>{{ 'orders.none' | translate }} - <a routerLink="/products-list">{{ 'home.shopNow' | translate }}</a></p>
 }

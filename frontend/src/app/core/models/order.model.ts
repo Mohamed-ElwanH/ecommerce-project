@@ -1,9 +1,21 @@
 import { IAddress } from './address.model';
 
+export interface IOrderProductRef {
+  _id: string;
+  name?: string;
+  slug?: string;
+}
+
 export interface IOrderProduct {
-  productId: string; // ObjectId, not populated by the backend
+  productId: IOrderProductRef | string; // populated with name/slug on read endpoints
   quantity: number;
   priceAtOrderTime: number;
+}
+
+export function orderProductName(product: IOrderProduct['productId']): string {
+  return typeof product === 'object' && product
+    ? product.name || product._id
+    : product;
 }
 
 export type TOrderStatus =

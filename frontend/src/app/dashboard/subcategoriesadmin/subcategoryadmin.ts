@@ -4,6 +4,7 @@ import { SubCategoryService } from '../../core/services/subCategory-service';
 import { CategoryService } from '../../core/services/category-service';
 import { ISubCategory } from '../../core/models/subCategory.model';
 import { ICategory } from '../../core/models/category.model';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
   imports: [FormsModule],
@@ -34,7 +35,7 @@ export class Subcategoryadmin implements OnInit {
   load() {
     this._subCategoryService.getAllSubCategories().subscribe({
       next: (res) => (this.subCategories = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -55,7 +56,7 @@ export class Subcategoryadmin implements OnInit {
             this.cancelEdit();
             this.load();
           },
-          error: (err) => (this.errorMessage = err.error?.error),
+          error: (err) => (this.errorMessage = getApiError(err)),
         });
     } else {
       this._subCategoryService.createSubCategory(this.form).subscribe({
@@ -64,7 +65,7 @@ export class Subcategoryadmin implements OnInit {
           this.form = { name: '', slug: '', category: '', isActive: true };
           this.load();
         },
-        error: (err) => (this.errorMessage = err.error?.error),
+        error: (err) => (this.errorMessage = getApiError(err)),
       });
     }
   }
@@ -92,7 +93,7 @@ export class Subcategoryadmin implements OnInit {
         this.successMessage = res.message;
         this.load();
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

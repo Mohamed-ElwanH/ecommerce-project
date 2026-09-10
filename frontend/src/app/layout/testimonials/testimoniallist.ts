@@ -3,9 +3,11 @@ import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TestimonialService } from '../../core/services/testimonial-service';
 import { ITestimonial } from '../../core/models/testimonial.model';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { getApiError } from '../../core/utils/get-api-error';
 
 @Component({
-  imports: [DatePipe, FormsModule],
+  imports: [DatePipe, FormsModule, TranslatePipe],
   selector: 'app-testimoniallist',
   styleUrl: './testimoniallist.css',
   templateUrl: './testimoniallist.html',
@@ -25,7 +27,7 @@ export class Testimoniallist implements OnInit {
   loadApproved() {
     this._testimonialService.getApprovedTestimonials().subscribe({
       next: (res) => (this.testimonials = res.data),
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 
@@ -34,11 +36,10 @@ export class Testimoniallist implements OnInit {
     this.successMessage = '';
     this._testimonialService.createTestimonial(this.form).subscribe({
       next: () => {
-        this.successMessage =
-          'Thank you! Your testimonial was submitted and is awaiting approval.';
+        this.successMessage = 'ok';
         this.form = { name: '', message: '' };
       },
-      error: (err) => (this.errorMessage = err.error?.error),
+      error: (err) => (this.errorMessage = getApiError(err)),
     });
   }
 }

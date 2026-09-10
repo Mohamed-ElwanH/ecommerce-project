@@ -1,7 +1,7 @@
-<h1>Testimonials</h1>
+<h1>{{ 'testimonials.title' | translate }}</h1>
 
 @if (successMessage) {
-  <p class="alert alert-success">{{ successMessage }}</p>
+  <p class="alert alert-success">{{ 'testimonials.thanks' | translate }}</p>
 }
 @if (errorMessage) {
   <p class="alert alert-danger">{{ errorMessage }}</p>
@@ -20,17 +20,17 @@
     }
   </div>
 } @else {
-  <p>No approved testimonials yet - be the first to share your experience!</p>
+  <p>{{ 'testimonials.none' | translate }}</p>
 }
 
-<h2>Share your experience</h2>
+<h2>{{ 'testimonials.share' | translate }}</h2>
 <form (ngSubmit)="submit()">
   <div class="form-field">
-    <label for="tname">Your name</label>
+    <label for="tname">{{ 'testimonials.name' | translate }}</label>
     <input id="tname" type="text" [(ngModel)]="form.name" name="name" required />
   </div>
   <div class="form-field">
-    <label for="tmessage">Your message (10 - 500 characters)</label>
+    <label for="tmessage">{{ 'testimonials.message' | translate }}</label>
     <textarea
       id="tmessage"
       rows="4"
@@ -41,5 +41,5 @@
       required
     ></textarea>
   </div>
-  <button type="submit" class="btn btn-primary">Submit testimonial</button>
+  <button type="submit" class="btn btn-primary">{{ 'testimonials.submit' | translate }}</button>
 </form>

@@ -19,11 +19,14 @@ export class ProductService {
   getProductBySlug(slug: string) {
     return this._http.get<IProductResponse>(this.apiURL + `/${slug}`);
   }
+  getProductById(id: string) {
+    return this._http.get<IProductResponse>(this.apiURL + `/${id}`);
+  }
   //create: multer expects a multipart form with an "images" file array field
   createProduct(formData: FormData) {
     return this._http.post<IProductResponse>(this.apiURL, formData);
   }
-  //update is a plain JSON PUT (the backend route has no upload middleware)
+  //update is JSON only - no image upload
   updateProduct(id: string, payload: Partial<IProductPayload>) {
     return this._http.put<IProductResponse>(
       this.apiURL + `/${id}`,

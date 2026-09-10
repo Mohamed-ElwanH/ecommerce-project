@@ -5,9 +5,10 @@ import { IProduct } from '../../core/models/product.model';
 import { Product } from '../productslist/product/product';
 import { TestimonialService } from '../../core/services/testimonial-service';
 import { ITestimonial } from '../../core/models/testimonial.model';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
-  imports: [Product, RouterLink],
+  imports: [Product, RouterLink, TranslatePipe],
   selector: 'app-home',
   styleUrl: './home.css',
   templateUrl: './home.html',

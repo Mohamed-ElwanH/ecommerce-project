@@ -4,11 +4,13 @@ import { AuthService } from '../../../core/services/auth-service';
 import { CartService } from '../../../core/services/cart-service';
 import { CategoryService } from '../../../core/services/category-service';
 import { SubCategoryService } from '../../../core/services/subCategory-service';
+import { TranslationService } from '../../../core/services/translation-service';
+import { TranslatePipe } from '../../../core/pipes/translate.pipe';
 import { ICategory } from '../../../core/models/category.model';
 import { ISubCategory } from '../../../core/models/subCategory.model';
 
 @Component({
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, TranslatePipe],
   selector: 'app-header',
   styleUrl: './header.css',
   templateUrl: './header.html',
@@ -19,6 +21,7 @@ export class Header implements OnInit {
     private _cartService: CartService,
     private _categoryService: CategoryService,
     private _subCategoryService: SubCategoryService,
+    protected translation: TranslationService,
   ) {}
   name = ''; //if name exists then there's someonelogged in and if not then not
   isAdmin = false;
